@@ -1,12 +1,200 @@
-﻿  geometry.cpp
+﻿  Color.cpp
+  geometry.cpp
+geometry.cpp(108): error C2440: “return”: 无法从“int”转换为“COLOR”
+  geometry.cpp(108): note: 无构造函数可以接受源类型，或构造函数重载决策不明确
+geometry.cpp(130): error C2440: “初始化”: 无法从“int”转换为“COLOR”
+  geometry.cpp(130): note: 无构造函数可以接受源类型，或构造函数重载决策不明确
+geometry.cpp(132): error C2440: “初始化”: 无法从“int”转换为“COLOR”
+  geometry.cpp(132): note: 无构造函数可以接受源类型，或构造函数重载决策不明确
+geometry.cpp(147): error C2679: 二进制“=”: 没有找到接受“int”类型的右操作数的运算符(或没有可接受的转换)
+  c:\users\msi-cn\documents\visual studio 2017\projects\myraytracer\wjgeometry\Color.h(5): note: 可能是“COLOR &COLOR::operator =(COLOR &&)”
+  c:\users\msi-cn\documents\visual studio 2017\projects\myraytracer\wjgeometry\Color.h(5): note: 或    “COLOR &COLOR::operator =(const COLOR &)”
+  geometry.cpp(147): note: 尝试匹配参数列表“(COLOR, int)”时
+geometry.cpp(150): error C2440: “初始化”: 无法从“int”转换为“COLOR”
+  geometry.cpp(150): note: 无构造函数可以接受源类型，或构造函数重载决策不明确
+geometry.cpp(199): error C2440: “初始化”: 无法从“int”转换为“COLOR”
+  geometry.cpp(199): note: 无构造函数可以接受源类型，或构造函数重载决策不明确
+geometry.cpp(200): error C2440: “初始化”: 无法从“int”转换为“COLOR”
+  geometry.cpp(200): note: 无构造函数可以接受源类型，或构造函数重载决策不明确
+geometry.cpp(201): error C2440: “初始化”: 无法从“int”转换为“COLOR”
+  geometry.cpp(201): note: 无构造函数可以接受源类型，或构造函数重载决策不明确
+geometry.cpp(202): error C2440: “初始化”: 无法从“int”转换为“COLOR”
+  geometry.cpp(202): note: 无构造函数可以接受源类型，或构造函数重载决策不明确
+geometry.cpp(222): error C2664: “COLOR ColorModulate(COLOR,COLOR)”: 无法将参数 2 从“int”转换为“COLOR”
+  geometry.cpp(222): note: 无构造函数可以接受源类型，或构造函数重载决策不明确
 geometry.cpp(313): warning C4244: “=”: 从“float”转换到“int”，可能丢失数据
 geometry.cpp(317): warning C4244: “=”: 从“float”转换到“int”，可能丢失数据
 geometry.cpp(321): warning C4244: “=”: 从“float”转换到“int”，可能丢失数据
 geometry.cpp(325): warning C4244: “=”: 从“float”转换到“int”，可能丢失数据
-geometry.cpp(488): warning C4244: “*=”: 从“float”转换到“COLOR”，可能丢失数据
-geometry.cpp(489): warning C4244: “*=”: 从“float”转换到“COLOR”，可能丢失数据
-geometry.cpp(490): warning C4244: “*=”: 从“float”转换到“COLOR”，可能丢失数据
-geometry.cpp(511): warning C4244: “=”: 从“float”转换到“COLOR”，可能丢失数据
-geometry.cpp(512): warning C4244: “=”: 从“float”转换到“COLOR”，可能丢失数据
-geometry.cpp(513): warning C4244: “=”: 从“float”转换到“COLOR”，可能丢失数据
-  WJGeometry.vcxproj -> C:\Users\msi-cn\documents\visual studio 2017\Projects\myRayTracer\x64\Release\WJGeometry.lib
+geometry.cpp(328): error C2440: “初始化”: 无法从“int”转换为“COLOR”
+  geometry.cpp(328): note: 无构造函数可以接受源类型，或构造函数重载决策不明确
+geometry.cpp(339): error C2679: 二进制“=”: 没有找到接受“int”类型的右操作数的运算符(或没有可接受的转换)
+  c:\users\msi-cn\documents\visual studio 2017\projects\myraytracer\wjgeometry\Color.h(5): note: 可能是“COLOR &COLOR::operator =(COLOR &&)”
+  c:\users\msi-cn\documents\visual studio 2017\projects\myraytracer\wjgeometry\Color.h(5): note: 或    “COLOR &COLOR::operator =(const COLOR &)”
+  geometry.cpp(339): note: 尝试匹配参数列表“(COLOR, int)”时
+geometry.cpp(340): error C2679: 二进制“=”: 没有找到接受“int”类型的右操作数的运算符(或没有可接受的转换)
+  c:\users\msi-cn\documents\visual studio 2017\projects\myraytracer\wjgeometry\Color.h(5): note: 可能是“COLOR &COLOR::operator =(COLOR &&)”
+  c:\users\msi-cn\documents\visual studio 2017\projects\myraytracer\wjgeometry\Color.h(5): note: 或    “COLOR &COLOR::operator =(const COLOR &)”
+  geometry.cpp(340): note: 尝试匹配参数列表“(COLOR, int)”时
+geometry.cpp(341): error C2679: 二进制“=”: 没有找到接受“int”类型的右操作数的运算符(或没有可接受的转换)
+  c:\users\msi-cn\documents\visual studio 2017\projects\myraytracer\wjgeometry\Color.h(5): note: 可能是“COLOR &COLOR::operator =(COLOR &&)”
+  c:\users\msi-cn\documents\visual studio 2017\projects\myraytracer\wjgeometry\Color.h(5): note: 或    “COLOR &COLOR::operator =(const COLOR &)”
+  geometry.cpp(341): note: 尝试匹配参数列表“(COLOR, int)”时
+geometry.cpp(342): error C2679: 二进制“=”: 没有找到接受“int”类型的右操作数的运算符(或没有可接受的转换)
+  c:\users\msi-cn\documents\visual studio 2017\projects\myraytracer\wjgeometry\Color.h(5): note: 可能是“COLOR &COLOR::operator =(COLOR &&)”
+  c:\users\msi-cn\documents\visual studio 2017\projects\myraytracer\wjgeometry\Color.h(5): note: 或    “COLOR &COLOR::operator =(const COLOR &)”
+  geometry.cpp(342): note: 尝试匹配参数列表“(COLOR, int)”时
+geometry.cpp(343): error C2679: 二进制“=”: 没有找到接受“int”类型的右操作数的运算符(或没有可接受的转换)
+  c:\users\msi-cn\documents\visual studio 2017\projects\myraytracer\wjgeometry\Color.h(5): note: 可能是“COLOR &COLOR::operator =(COLOR &&)”
+  c:\users\msi-cn\documents\visual studio 2017\projects\myraytracer\wjgeometry\Color.h(5): note: 或    “COLOR &COLOR::operator =(const COLOR &)”
+  geometry.cpp(343): note: 尝试匹配参数列表“(COLOR, int)”时
+geometry.cpp(355): error C2679: 二进制“=”: 没有找到接受“int”类型的右操作数的运算符(或没有可接受的转换)
+  c:\users\msi-cn\documents\visual studio 2017\projects\myraytracer\wjgeometry\Color.h(5): note: 可能是“COLOR &COLOR::operator =(COLOR &&)”
+  c:\users\msi-cn\documents\visual studio 2017\projects\myraytracer\wjgeometry\Color.h(5): note: 或    “COLOR &COLOR::operator =(const COLOR &)”
+  geometry.cpp(355): note: 尝试匹配参数列表“(COLOR, int)”时
+geometry.cpp(356): error C2679: 二进制“=”: 没有找到接受“int”类型的右操作数的运算符(或没有可接受的转换)
+  c:\users\msi-cn\documents\visual studio 2017\projects\myraytracer\wjgeometry\Color.h(5): note: 可能是“COLOR &COLOR::operator =(COLOR &&)”
+  c:\users\msi-cn\documents\visual studio 2017\projects\myraytracer\wjgeometry\Color.h(5): note: 或    “COLOR &COLOR::operator =(const COLOR &)”
+  geometry.cpp(356): note: 尝试匹配参数列表“(COLOR, int)”时
+geometry.cpp(357): error C2679: 二进制“=”: 没有找到接受“int”类型的右操作数的运算符(或没有可接受的转换)
+  c:\users\msi-cn\documents\visual studio 2017\projects\myraytracer\wjgeometry\Color.h(5): note: 可能是“COLOR &COLOR::operator =(COLOR &&)”
+  c:\users\msi-cn\documents\visual studio 2017\projects\myraytracer\wjgeometry\Color.h(5): note: 或    “COLOR &COLOR::operator =(const COLOR &)”
+  geometry.cpp(357): note: 尝试匹配参数列表“(COLOR, int)”时
+geometry.cpp(358): error C2679: 二进制“=”: 没有找到接受“int”类型的右操作数的运算符(或没有可接受的转换)
+  c:\users\msi-cn\documents\visual studio 2017\projects\myraytracer\wjgeometry\Color.h(5): note: 可能是“COLOR &COLOR::operator =(COLOR &&)”
+  c:\users\msi-cn\documents\visual studio 2017\projects\myraytracer\wjgeometry\Color.h(5): note: 或    “COLOR &COLOR::operator =(const COLOR &)”
+  geometry.cpp(358): note: 尝试匹配参数列表“(COLOR, int)”时
+geometry.cpp(359): error C2679: 二进制“=”: 没有找到接受“int”类型的右操作数的运算符(或没有可接受的转换)
+  c:\users\msi-cn\documents\visual studio 2017\projects\myraytracer\wjgeometry\Color.h(5): note: 可能是“COLOR &COLOR::operator =(COLOR &&)”
+  c:\users\msi-cn\documents\visual studio 2017\projects\myraytracer\wjgeometry\Color.h(5): note: 或    “COLOR &COLOR::operator =(const COLOR &)”
+  geometry.cpp(359): note: 尝试匹配参数列表“(COLOR, int)”时
+geometry.cpp(371): error C2679: 二进制“=”: 没有找到接受“int”类型的右操作数的运算符(或没有可接受的转换)
+  c:\users\msi-cn\documents\visual studio 2017\projects\myraytracer\wjgeometry\Color.h(5): note: 可能是“COLOR &COLOR::operator =(COLOR &&)”
+  c:\users\msi-cn\documents\visual studio 2017\projects\myraytracer\wjgeometry\Color.h(5): note: 或    “COLOR &COLOR::operator =(const COLOR &)”
+  geometry.cpp(371): note: 尝试匹配参数列表“(COLOR, int)”时
+geometry.cpp(372): error C2679: 二进制“=”: 没有找到接受“int”类型的右操作数的运算符(或没有可接受的转换)
+  c:\users\msi-cn\documents\visual studio 2017\projects\myraytracer\wjgeometry\Color.h(5): note: 可能是“COLOR &COLOR::operator =(COLOR &&)”
+  c:\users\msi-cn\documents\visual studio 2017\projects\myraytracer\wjgeometry\Color.h(5): note: 或    “COLOR &COLOR::operator =(const COLOR &)”
+  geometry.cpp(372): note: 尝试匹配参数列表“(COLOR, int)”时
+geometry.cpp(373): error C2679: 二进制“=”: 没有找到接受“int”类型的右操作数的运算符(或没有可接受的转换)
+  c:\users\msi-cn\documents\visual studio 2017\projects\myraytracer\wjgeometry\Color.h(5): note: 可能是“COLOR &COLOR::operator =(COLOR &&)”
+  c:\users\msi-cn\documents\visual studio 2017\projects\myraytracer\wjgeometry\Color.h(5): note: 或    “COLOR &COLOR::operator =(const COLOR &)”
+  geometry.cpp(373): note: 尝试匹配参数列表“(COLOR, int)”时
+geometry.cpp(374): error C2679: 二进制“=”: 没有找到接受“int”类型的右操作数的运算符(或没有可接受的转换)
+  c:\users\msi-cn\documents\visual studio 2017\projects\myraytracer\wjgeometry\Color.h(5): note: 可能是“COLOR &COLOR::operator =(COLOR &&)”
+  c:\users\msi-cn\documents\visual studio 2017\projects\myraytracer\wjgeometry\Color.h(5): note: 或    “COLOR &COLOR::operator =(const COLOR &)”
+  geometry.cpp(374): note: 尝试匹配参数列表“(COLOR, int)”时
+geometry.cpp(375): error C2679: 二进制“=”: 没有找到接受“int”类型的右操作数的运算符(或没有可接受的转换)
+  c:\users\msi-cn\documents\visual studio 2017\projects\myraytracer\wjgeometry\Color.h(5): note: 可能是“COLOR &COLOR::operator =(COLOR &&)”
+  c:\users\msi-cn\documents\visual studio 2017\projects\myraytracer\wjgeometry\Color.h(5): note: 或    “COLOR &COLOR::operator =(const COLOR &)”
+  geometry.cpp(375): note: 尝试匹配参数列表“(COLOR, int)”时
+geometry.cpp(387): error C2679: 二进制“=”: 没有找到接受“int”类型的右操作数的运算符(或没有可接受的转换)
+  c:\users\msi-cn\documents\visual studio 2017\projects\myraytracer\wjgeometry\Color.h(5): note: 可能是“COLOR &COLOR::operator =(COLOR &&)”
+  c:\users\msi-cn\documents\visual studio 2017\projects\myraytracer\wjgeometry\Color.h(5): note: 或    “COLOR &COLOR::operator =(const COLOR &)”
+  geometry.cpp(387): note: 尝试匹配参数列表“(COLOR, int)”时
+geometry.cpp(392): error C2679: 二进制“=”: 没有找到接受“int”类型的右操作数的运算符(或没有可接受的转换)
+  c:\users\msi-cn\documents\visual studio 2017\projects\myraytracer\wjgeometry\Color.h(5): note: 可能是“COLOR &COLOR::operator =(COLOR &&)”
+  c:\users\msi-cn\documents\visual studio 2017\projects\myraytracer\wjgeometry\Color.h(5): note: 或    “COLOR &COLOR::operator =(const COLOR &)”
+  geometry.cpp(392): note: 尝试匹配参数列表“(COLOR, int)”时
+geometry.cpp(393): error C2679: 二进制“=”: 没有找到接受“int”类型的右操作数的运算符(或没有可接受的转换)
+  c:\users\msi-cn\documents\visual studio 2017\projects\myraytracer\wjgeometry\Color.h(5): note: 可能是“COLOR &COLOR::operator =(COLOR &&)”
+  c:\users\msi-cn\documents\visual studio 2017\projects\myraytracer\wjgeometry\Color.h(5): note: 或    “COLOR &COLOR::operator =(const COLOR &)”
+  geometry.cpp(393): note: 尝试匹配参数列表“(COLOR, int)”时
+geometry.cpp(394): error C2679: 二进制“=”: 没有找到接受“int”类型的右操作数的运算符(或没有可接受的转换)
+  c:\users\msi-cn\documents\visual studio 2017\projects\myraytracer\wjgeometry\Color.h(5): note: 可能是“COLOR &COLOR::operator =(COLOR &&)”
+  c:\users\msi-cn\documents\visual studio 2017\projects\myraytracer\wjgeometry\Color.h(5): note: 或    “COLOR &COLOR::operator =(const COLOR &)”
+  geometry.cpp(394): note: 尝试匹配参数列表“(COLOR, int)”时
+geometry.cpp(395): error C2679: 二进制“=”: 没有找到接受“int”类型的右操作数的运算符(或没有可接受的转换)
+  c:\users\msi-cn\documents\visual studio 2017\projects\myraytracer\wjgeometry\Color.h(5): note: 可能是“COLOR &COLOR::operator =(COLOR &&)”
+  c:\users\msi-cn\documents\visual studio 2017\projects\myraytracer\wjgeometry\Color.h(5): note: 或    “COLOR &COLOR::operator =(const COLOR &)”
+  geometry.cpp(395): note: 尝试匹配参数列表“(COLOR, int)”时
+geometry.cpp(402): error C2679: 二进制“=”: 没有找到接受“int”类型的右操作数的运算符(或没有可接受的转换)
+  c:\users\msi-cn\documents\visual studio 2017\projects\myraytracer\wjgeometry\Color.h(5): note: 可能是“COLOR &COLOR::operator =(COLOR &&)”
+  c:\users\msi-cn\documents\visual studio 2017\projects\myraytracer\wjgeometry\Color.h(5): note: 或    “COLOR &COLOR::operator =(const COLOR &)”
+  geometry.cpp(402): note: 尝试匹配参数列表“(COLOR, int)”时
+geometry.cpp(403): error C2679: 二进制“=”: 没有找到接受“int”类型的右操作数的运算符(或没有可接受的转换)
+  c:\users\msi-cn\documents\visual studio 2017\projects\myraytracer\wjgeometry\Color.h(5): note: 可能是“COLOR &COLOR::operator =(COLOR &&)”
+  c:\users\msi-cn\documents\visual studio 2017\projects\myraytracer\wjgeometry\Color.h(5): note: 或    “COLOR &COLOR::operator =(const COLOR &)”
+  geometry.cpp(403): note: 尝试匹配参数列表“(COLOR, int)”时
+geometry.cpp(404): error C2679: 二进制“=”: 没有找到接受“int”类型的右操作数的运算符(或没有可接受的转换)
+  c:\users\msi-cn\documents\visual studio 2017\projects\myraytracer\wjgeometry\Color.h(5): note: 可能是“COLOR &COLOR::operator =(COLOR &&)”
+  c:\users\msi-cn\documents\visual studio 2017\projects\myraytracer\wjgeometry\Color.h(5): note: 或    “COLOR &COLOR::operator =(const COLOR &)”
+  geometry.cpp(404): note: 尝试匹配参数列表“(COLOR, int)”时
+geometry.cpp(413): error C2679: 二进制“=”: 没有找到接受“int”类型的右操作数的运算符(或没有可接受的转换)
+  c:\users\msi-cn\documents\visual studio 2017\projects\myraytracer\wjgeometry\Color.h(5): note: 可能是“COLOR &COLOR::operator =(COLOR &&)”
+  c:\users\msi-cn\documents\visual studio 2017\projects\myraytracer\wjgeometry\Color.h(5): note: 或    “COLOR &COLOR::operator =(const COLOR &)”
+  geometry.cpp(413): note: 尝试匹配参数列表“(COLOR, int)”时
+geometry.cpp(414): error C2679: 二进制“=”: 没有找到接受“int”类型的右操作数的运算符(或没有可接受的转换)
+  c:\users\msi-cn\documents\visual studio 2017\projects\myraytracer\wjgeometry\Color.h(5): note: 可能是“COLOR &COLOR::operator =(COLOR &&)”
+  c:\users\msi-cn\documents\visual studio 2017\projects\myraytracer\wjgeometry\Color.h(5): note: 或    “COLOR &COLOR::operator =(const COLOR &)”
+  geometry.cpp(414): note: 尝试匹配参数列表“(COLOR, int)”时
+geometry.cpp(415): error C2679: 二进制“=”: 没有找到接受“int”类型的右操作数的运算符(或没有可接受的转换)
+  c:\users\msi-cn\documents\visual studio 2017\projects\myraytracer\wjgeometry\Color.h(5): note: 可能是“COLOR &COLOR::operator =(COLOR &&)”
+  c:\users\msi-cn\documents\visual studio 2017\projects\myraytracer\wjgeometry\Color.h(5): note: 或    “COLOR &COLOR::operator =(const COLOR &)”
+  geometry.cpp(415): note: 尝试匹配参数列表“(COLOR, int)”时
+geometry.cpp(454): error C2440: “初始化”: 无法从“int”转换为“COLOR”
+  geometry.cpp(454): note: 无构造函数可以接受源类型，或构造函数重载决策不明确
+geometry.cpp(455): error C2676: 二进制“&”:“COLOR”不定义该运算符或到预定义运算符可接收的类型的转换
+geometry.cpp(455): error C2088: “&”: 对于 class 非法
+geometry.cpp(456): error C2676: 二进制“&”:“COLOR”不定义该运算符或到预定义运算符可接收的类型的转换
+geometry.cpp(456): error C2088: “&”: 对于 class 非法
+geometry.cpp(457): error C2676: 二进制“&”:“COLOR”不定义该运算符或到预定义运算符可接收的类型的转换
+geometry.cpp(457): error C2088: “&”: 对于 class 非法
+geometry.cpp(458): error C2676: 二进制“&”:“COLOR”不定义该运算符或到预定义运算符可接收的类型的转换
+geometry.cpp(458): error C2088: “&”: 对于 class 非法
+geometry.cpp(459): error C2676: 二进制“&”:“COLOR”不定义该运算符或到预定义运算符可接收的类型的转换
+geometry.cpp(459): error C2088: “&”: 对于 class 非法
+geometry.cpp(460): error C2676: 二进制“&”:“COLOR”不定义该运算符或到预定义运算符可接收的类型的转换
+geometry.cpp(460): error C2088: “&”: 对于 class 非法
+geometry.cpp(461): error C2676: 二进制“*”:“COLOR”不定义该运算符或到预定义运算符可接收的类型的转换
+geometry.cpp(461): error C2088: “*”: 对于 class 非法
+geometry.cpp(467): error C2440: “初始化”: 无法从“int”转换为“COLOR”
+  geometry.cpp(467): note: 无构造函数可以接受源类型，或构造函数重载决策不明确
+geometry.cpp(468): error C2676: 二进制“&”:“COLOR”不定义该运算符或到预定义运算符可接收的类型的转换
+geometry.cpp(468): error C2088: “&”: 对于 class 非法
+geometry.cpp(469): error C2676: 二进制“&”:“COLOR”不定义该运算符或到预定义运算符可接收的类型的转换
+geometry.cpp(469): error C2088: “&”: 对于 class 非法
+geometry.cpp(470): error C2676: 二进制“&”:“COLOR”不定义该运算符或到预定义运算符可接收的类型的转换
+geometry.cpp(470): error C2088: “&”: 对于 class 非法
+geometry.cpp(471): error C2676: 二进制“&”:“COLOR”不定义该运算符或到预定义运算符可接收的类型的转换
+geometry.cpp(471): error C2088: “&”: 对于 class 非法
+geometry.cpp(472): error C2676: 二进制“&”:“COLOR”不定义该运算符或到预定义运算符可接收的类型的转换
+geometry.cpp(472): error C2088: “&”: 对于 class 非法
+geometry.cpp(473): error C2676: 二进制“&”:“COLOR”不定义该运算符或到预定义运算符可接收的类型的转换
+geometry.cpp(473): error C2088: “&”: 对于 class 非法
+geometry.cpp(474): error C2676: 二进制“+”:“COLOR”不定义该运算符或到预定义运算符可接收的类型的转换
+geometry.cpp(474): error C2088: “+”: 对于 class 非法
+geometry.cpp(475): error C2676: 二进制“+”:“COLOR”不定义该运算符或到预定义运算符可接收的类型的转换
+geometry.cpp(475): error C2088: “+”: 对于 class 非法
+geometry.cpp(476): error C2676: 二进制“+”:“COLOR”不定义该运算符或到预定义运算符可接收的类型的转换
+geometry.cpp(476): error C2088: “+”: 对于 class 非法
+geometry.cpp(477): error C2676: 二进制“<<”:“COLOR”不定义该运算符或到预定义运算符可接收的类型的转换
+geometry.cpp(477): error C2088: “<<”: 对于 class 非法
+geometry.cpp(484): error C2440: “初始化”: 无法从“int”转换为“COLOR”
+  geometry.cpp(484): note: 无构造函数可以接受源类型，或构造函数重载决策不明确
+geometry.cpp(485): error C2676: 二进制“&”:“COLOR”不定义该运算符或到预定义运算符可接收的类型的转换
+geometry.cpp(485): error C2088: “&”: 对于 class 非法
+geometry.cpp(486): error C2676: 二进制“&”:“COLOR”不定义该运算符或到预定义运算符可接收的类型的转换
+geometry.cpp(486): error C2088: “&”: 对于 class 非法
+geometry.cpp(487): error C2676: 二进制“&”:“COLOR”不定义该运算符或到预定义运算符可接收的类型的转换
+geometry.cpp(487): error C2088: “&”: 对于 class 非法
+geometry.cpp(488): error C2676: 二进制“*=”:“COLOR”不定义该运算符或到预定义运算符可接收的类型的转换
+geometry.cpp(489): error C2676: 二进制“*=”:“COLOR”不定义该运算符或到预定义运算符可接收的类型的转换
+geometry.cpp(490): error C2676: 二进制“*=”:“COLOR”不定义该运算符或到预定义运算符可接收的类型的转换
+geometry.cpp(491): error C2676: 二进制“<<”:“COLOR”不定义该运算符或到预定义运算符可接收的类型的转换
+geometry.cpp(491): error C2088: “<<”: 对于 class 非法
+geometry.cpp(498): error C2440: “初始化”: 无法从“int”转换为“COLOR”
+  geometry.cpp(498): note: 无构造函数可以接受源类型，或构造函数重载决策不明确
+geometry.cpp(505): error C2440: “初始化”: 无法从“int”转换为“COLOR”
+  geometry.cpp(505): note: 无构造函数可以接受源类型，或构造函数重载决策不明确
+geometry.cpp(507): error C2676: 二进制“&”:“COLOR”不定义该运算符或到预定义运算符可接收的类型的转换
+geometry.cpp(507): error C2088: “&”: 对于 class 非法
+geometry.cpp(508): error C2676: 二进制“&”:“COLOR”不定义该运算符或到预定义运算符可接收的类型的转换
+geometry.cpp(508): error C2088: “&”: 对于 class 非法
+geometry.cpp(509): error C2676: 二进制“&”:“COLOR”不定义该运算符或到预定义运算符可接收的类型的转换
+geometry.cpp(509): error C2088: “&”: 对于 class 非法
+geometry.cpp(511): error C2676: 二进制“/”:“COLOR”不定义该运算符或到预定义运算符可接收的类型的转换
+geometry.cpp(512): error C2676: 二进制“/”:“COLOR”不定义该运算符或到预定义运算符可接收的类型的转换
+geometry.cpp(513): error C2676: 二进制“/”:“COLOR”不定义该运算符或到预定义运算符可接收的类型的转换
+geometry.cpp(515): error C2676: 二进制“<<”:“COLOR”不定义该运算符或到预定义运算符可接收的类型的转换
+geometry.cpp(515): error C2088: “<<”: 对于 class 非法

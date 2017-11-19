@@ -100,7 +100,7 @@ bool IsSamePosition(Vector4 position1, Vector4 position2)
 	return result;
 }
 
-COLOR RayTrace(Ray& eyeRay, Scene& scene, unsigned int maxRayTraceDepth, float refractionRatio)
+color_t RayTrace(Ray& eyeRay, Scene& scene, unsigned int maxRayTraceDepth, float refractionRatio)
 {
 	IntersectionInfo nearestInf = CalcNearestNonTransparentIntersectionInf(scene, eyeRay);
 	if (nearestInf.isHit == false)
@@ -127,9 +127,9 @@ COLOR RayTrace(Ray& eyeRay, Scene& scene, unsigned int maxRayTraceDepth, float r
 			VisibleLightArray[VisibleLightCount++] = &scene.lightList[i];
 		}
 	}
-	COLOR resultColor = 0x0;
+	color_t resultColor = 0x0;
 
-	COLOR reflectColor = 0x0;
+	color_t reflectColor = 0x0;
 	for (int i = 0; i < VisibleLightCount; ++i)
 	{
 		resultColor = ColorAdd(resultColor, ApplyLight(*VisibleLightArray[i], nearestInf, eyeRay));
@@ -147,7 +147,7 @@ COLOR RayTrace(Ray& eyeRay, Scene& scene, unsigned int maxRayTraceDepth, float r
 		reflectColor = 0x0;
 	}
 
-	COLOR refractionColor = 0x0;
+	color_t refractionColor = 0x0;
 	if (maxRayTraceDepth > 0 && nearestInf.material.refractiveness > 0.0f)
 	{
 		Ray refractionRay;
@@ -194,12 +194,12 @@ Ray GenerateRay(float x, float y, float fovAngle, float aspect)
 	return result;
 }
 
-COLOR ApplyLight(PointLight & light, IntersectionInfo & intersectionInf, Ray& ray)
+color_t ApplyLight(PointLight & light, IntersectionInfo & intersectionInf, Ray& ray)
 {
-	COLOR result = 0x0;
-	COLOR Diffuse = 0x0;
-	COLOR Specular = 0x0;
-	COLOR Ambient = 0x0;
+	color_t result = 0x0;
+	color_t Diffuse = 0x0;
+	color_t Specular = 0x0;
+	color_t Ambient = 0x0;
 
 	Vector4 lightDir = intersectionInf.position - light.position;
 	lightDir.ResetUnitVector();
@@ -304,7 +304,7 @@ void Plane::CalcRayIntersectionInfo(Ray& ray, IntersectionInfo ** pInf)
 	}
 }
 
-COLOR Plane::SampleTextureMap(float x, float z)
+color_t Plane::SampleTextureMap(float x, float z)
 {
 	int _x = 0;
 	int _z = 0;
@@ -325,7 +325,7 @@ COLOR Plane::SampleTextureMap(float x, float z)
 		_z = z - 1;
 	}
 	int temp = _x + _z;
-	COLOR result = ((temp & 0x1) ? COLOR_WHITE : COLOR_BLACK);
+	color result = ((temp & 0x1) ? COLOR_WHITE : COLOR_BLACK);
 	return result;
 }
 
@@ -449,42 +449,42 @@ void InitCamera(Camera & mainCamera)
 	mainCamera.visibleDistance = 1000.0f;
 }
 
-COLOR ColorModulate(COLOR color1, COLOR color2)
+color_t ColorModulate(color_t color1, color_t color2)
 {
-	COLOR result = 0x0;
-	COLOR R1 = CMID((color1 & 0x00FF0000) >> 16);
-	COLOR G1 = CMID((color1 & 0x0000FF00) >> 8);
-	COLOR B1 = CMID((color1 & 0x000000FF));
-	COLOR R2 = CMID((color2 & 0x00FF0000) >> 16);
-	COLOR G2 = CMID((color2 & 0x0000FF00) >> 8);
-	COLOR B2 = CMID((color2 & 0x000000FF));
+	color_t result = 0x0;
+	color_t R1 = CMID((color1 & 0x00FF0000) >> 16);
+	color_t G1 = CMID((color1 & 0x0000FF00) >> 8);
+	color_t B1 = CMID((color1 & 0x000000FF));
+	color_t R2 = CMID((color2 & 0x00FF0000) >> 16);
+	color_t G2 = CMID((color2 & 0x0000FF00) >> 8);
+	color_t B2 = CMID((color2 & 0x000000FF));
 	result = ((R1 * R2 / 255) << 16 | (G1 * G2 / 255) << 8) | (B1 * B2 / 255);
 	return result;
 }
 
-COLOR ColorAdd(COLOR color1, COLOR color2)
+color_t ColorAdd(color_t color1, color_t color2)
 {
-	COLOR result = 0x0;
-	COLOR R1 = CMID((color1 & 0x00FF0000) >> 16);
-	COLOR G1 = CMID((color1 & 0x0000FF00) >> 8);
-	COLOR B1 = CMID((color1 & 0x000000FF));
-	COLOR R2 = CMID((color2 & 0x00FF0000) >> 16);
-	COLOR G2 = CMID((color2 & 0x0000FF00) >> 8);
-	COLOR B2 = CMID((color2 & 0x000000FF));
-	COLOR R = CMID(R1 + R2);
-	COLOR G = CMID(G1 + G2);
-	COLOR B = CMID(B1 + B2);
+	color_t result = 0x0;
+	color_t R1 = CMID((color1 & 0x00FF0000) >> 16);
+	color_t G1 = CMID((color1 & 0x0000FF00) >> 8);
+	color_t B1 = CMID((color1 & 0x000000FF));
+	color_t R2 = CMID((color2 & 0x00FF0000) >> 16);
+	color_t G2 = CMID((color2 & 0x0000FF00) >> 8);
+	color_t B2 = CMID((color2 & 0x000000FF));
+	color_t R = CMID(R1 + R2);
+	color_t G = CMID(G1 + G2);
+	color_t B = CMID(B1 + B2);
 	result = (R << 16) | (G << 8) | B;
 	return result;
 }
 
-COLOR ColorMutiply(COLOR color1, float k)
+color_t ColorMutiply(color_t color1, float k)
 {
 	k = (k > 1.0f) ? 1.0f : ((k < .0f) ? .0f : k);
-	COLOR result = 0x0;
-	COLOR R1 = CMID((color1 & 0x00FF0000) >> 16);
-	COLOR G1 = CMID((color1 & 0x0000FF00) >> 8);
-	COLOR B1 = CMID((color1 & 0x000000FF));
+	color_t result = 0x0;
+	color_t R1 = CMID((color1 & 0x00FF0000) >> 16);
+	color_t G1 = CMID((color1 & 0x0000FF00) >> 8);
+	color_t B1 = CMID((color1 & 0x000000FF));
 	R1 *= k;
 	G1 *= k;
 	B1 *= k;
@@ -492,21 +492,21 @@ COLOR ColorMutiply(COLOR color1, float k)
 	return result;
 }
 
-COLOR ColorMerge(COLOR sourceColor, COLOR mergeColor, float mergeRatio)
+color_t ColorMerge(color_t sourceColor, color_t mergeColor, float mergeRatio)
 {
 	mergeRatio = (mergeRatio > 1.0f) ? 1.0f : ((mergeRatio < 0.0f) ? 0.0f : mergeRatio);
-	COLOR result = 0x0;
+	color_t result = 0x0;
 	result = ColorAdd(ColorMutiply(sourceColor, 1.0f - mergeRatio), ColorMutiply(mergeColor, mergeRatio));
 	return result;
 }
 
-COLOR GammaCorrection(COLOR sourceColor)
+color_t GammaCorrection(color_t sourceColor)
 {
-	COLOR resultColor = 0x0;
+	color_t resultColor = 0x0;
 
-	COLOR R = CMID((sourceColor & 0x00FF0000) >> 16);
-	COLOR G = CMID((sourceColor & 0x0000FF00) >> 8);
-	COLOR B = CMID((sourceColor & 0x000000FF));
+	color_t R = CMID((sourceColor & 0x00FF0000) >> 16);
+	color_t G = CMID((sourceColor & 0x0000FF00) >> 8);
+	color_t B = CMID((sourceColor & 0x000000FF));
 
 	R = pow(R / 255.0f, 1 / GAMMA_RATIO) * 255;
 	G = pow(G / 255.0f, 1 / GAMMA_RATIO) * 255;
@@ -536,7 +536,7 @@ void Scene::ApplyMatrix(Matrix4 viewMatrix)
 	}
 }
 
-void Render(COLOR* pData, int width, int height)
+void Render(color_t* pData, int width, int height)
 {
 	Scene scene = Scene();
 	InitScene(scene);
@@ -553,7 +553,7 @@ void Render(COLOR* pData, int width, int height)
 		for (int j = 0; j < height; ++j)
 		{
 			Ray pixelRay = GenerateRay(i / (float)width, j / (float)height, scene.mainCamera.fovy, height / (float)width);
-			COLOR pixelColor = RayTrace(pixelRay, scene, TRACE_COUNT, scene.defaultRefractiveness);
+			color_t pixelColor = RayTrace(pixelRay, scene, TRACE_COUNT, scene.defaultRefractiveness);
 			*(pData + j * width + i) = GammaCorrection (pixelColor);
 		}
 		float completePercent = 100 * i / (float)(width);

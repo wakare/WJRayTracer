@@ -1,8 +1,6 @@
 #pragma once
-#pragma comment(lib,"WJMath.lib")
 #include "WJMath.h"
-
-typedef __int32 COLOR;
+#include "Color.h"
 
 #define MAXSPHERECNT				8
 #define MAXFLOORCNT					6
@@ -35,10 +33,10 @@ enum RenderMode {
 class Material 
 {
 public:
-	COLOR Ambient;
-	COLOR Diffuse;
-	COLOR Specular;
-	COLOR Emissive;
+	color_t Ambient;
+	color_t Diffuse;
+	color_t Specular;
+	color_t Emissive;
 	float reflectiveness;
 	float refractiveness;
 	float refractionRatio;
@@ -56,7 +54,7 @@ class IntersectionInfo
 public:
 	Vector4 position;
 	Vector4 normal;
-	COLOR color;
+	color_t color;
 	float t;
 	Material material;
 	bool isHit = false;
@@ -75,7 +73,7 @@ class Sphere:public BaseGraphics
 public:
 	Vector4 position;
 	float radius;
-	COLOR color;		//assume each point is the same color.
+	color_t color;		//assume each point is the same color.
 	Material mtrl;
 	virtual void CalcRayIntersectionInfo(Ray& ray,IntersectionInfo** pInf);
 };
@@ -85,11 +83,11 @@ class Plane:public BaseGraphics
 public:
 	Vector4 normal;		//plane normal vector
 	float distance;		//origin to the plane.
-	COLOR color;
+	color_t color;
 	Vector4 PlanePoint;
 	Material mtrl;
 	virtual void CalcRayIntersectionInfo(Ray& ray, IntersectionInfo** pInf);
-	COLOR SampleTextureMap(float x, float z);
+	color_t SampleTextureMap(float x, float z);
 };
 
 class Camera 
@@ -109,9 +107,9 @@ class PointLight
 {
 public:
 	Vector4 position;
-	COLOR Diffuse;
-	COLOR Specular;
-	COLOR Ambient;
+	color_t Diffuse;
+	color_t Specular;
+	color_t Ambient;
 	float power;
 };
 
@@ -134,25 +132,15 @@ IntersectionInfo CalcNearestNonTransparentIntersectionInf(Scene& scene, Ray& ray
 
 bool IsSamePosition(Vector4 position1, Vector4 position2);
 
-COLOR RayTrace(Ray& ray,Scene& scene,unsigned int Depth, float refractiveness);
+color_t RayTrace(Ray& ray,Scene& scene,unsigned int Depth, float refractiveness);
 
-void Render(COLOR* pData, int width, int height);
+void Render(color_t* pData, int width, int height);
 
 //x,y=>(0,1) assume camera.up(0.0f,1.0f,0.0f) right(1.0f,0.0f,0.0f) eye(0.0f,0.0f,-1.0f)
 Ray GenerateRay(float x, float y,float fovAngle, float aspect);
 
-COLOR ApplyLight(PointLight& light, IntersectionInfo& intersectionInf, Ray& ray);
+color_t ApplyLight(PointLight& light, IntersectionInfo& intersectionInf, Ray& ray);
 
 void InitScene(Scene& scene);
 
 void InitCamera(Camera& camera);
-
-COLOR ColorModulate(COLOR color1, COLOR color2);
-
-COLOR ColorAdd(COLOR color1, COLOR color2);
-
-COLOR ColorMutiply(COLOR color1, float k);
-
-COLOR ColorMerge(COLOR sourceColor, COLOR mergeColor, float ratio);
-
-COLOR GammaCorrection(COLOR sourceColor);
