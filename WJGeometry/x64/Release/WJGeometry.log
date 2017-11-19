@@ -1,0 +1,12 @@
+﻿  geometry.cpp
+geometry.cpp(313): warning C4244: “=”: 从“float”转换到“int”，可能丢失数据
+geometry.cpp(317): warning C4244: “=”: 从“float”转换到“int”，可能丢失数据
+geometry.cpp(321): warning C4244: “=”: 从“float”转换到“int”，可能丢失数据
+geometry.cpp(325): warning C4244: “=”: 从“float”转换到“int”，可能丢失数据
+geometry.cpp(488): warning C4244: “*=”: 从“float”转换到“COLOR”，可能丢失数据
+geometry.cpp(489): warning C4244: “*=”: 从“float”转换到“COLOR”，可能丢失数据
+geometry.cpp(490): warning C4244: “*=”: 从“float”转换到“COLOR”，可能丢失数据
+geometry.cpp(511): warning C4244: “=”: 从“float”转换到“COLOR”，可能丢失数据
+geometry.cpp(512): warning C4244: “=”: 从“float”转换到“COLOR”，可能丢失数据
+geometry.cpp(513): warning C4244: “=”: 从“float”转换到“COLOR”，可能丢失数据
+  WJGeometry.vcxproj -> C:\Users\msi-cn\documents\visual studio 2017\Projects\myRayTracer\x64\Release\WJGeometry.lib
