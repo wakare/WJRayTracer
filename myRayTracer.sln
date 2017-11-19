@@ -3,9 +3,10 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26730.16
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "myRayTracer", "myRayTracer\myRayTracer.vcxproj", "{F64F69A6-8484-46CB-BABF-97E034CF3524}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "WJRayTracer", "myRayTracer\myRayTracer.vcxproj", "{F64F69A6-8484-46CB-BABF-97E034CF3524}"
 	ProjectSection(ProjectDependencies) = postProject
 		{18826417-11F1-4DB8-84F5-542065A5D691} = {18826417-11F1-4DB8-84F5-542065A5D691}
+		{C522F99D-2A3E-4EF2-99E8-61775E20A3C2} = {C522F99D-2A3E-4EF2-99E8-61775E20A3C2}
 		{95B251E8-AEA6-4335-8B49-AD8D77FFC369} = {95B251E8-AEA6-4335-8B49-AD8D77FFC369}
 	EndProjectSection
 EndProject
@@ -15,6 +16,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "WJGeometry", "WJGeometry\WJ
 	ProjectSection(ProjectDependencies) = postProject
 		{18826417-11F1-4DB8-84F5-542065A5D691} = {18826417-11F1-4DB8-84F5-542065A5D691}
 	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BmpGenerator", "BmpGenerator\BmpGenerator.vcxproj", "{C522F99D-2A3E-4EF2-99E8-61775E20A3C2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -48,6 +51,14 @@ Global
 		{95B251E8-AEA6-4335-8B49-AD8D77FFC369}.Release|x64.Build.0 = Release|x64
 		{95B251E8-AEA6-4335-8B49-AD8D77FFC369}.Release|x86.ActiveCfg = Release|Win32
 		{95B251E8-AEA6-4335-8B49-AD8D77FFC369}.Release|x86.Build.0 = Release|Win32
+		{C522F99D-2A3E-4EF2-99E8-61775E20A3C2}.Debug|x64.ActiveCfg = Debug|x64
+		{C522F99D-2A3E-4EF2-99E8-61775E20A3C2}.Debug|x64.Build.0 = Debug|x64
+		{C522F99D-2A3E-4EF2-99E8-61775E20A3C2}.Debug|x86.ActiveCfg = Debug|Win32
+		{C522F99D-2A3E-4EF2-99E8-61775E20A3C2}.Debug|x86.Build.0 = Debug|Win32
+		{C522F99D-2A3E-4EF2-99E8-61775E20A3C2}.Release|x64.ActiveCfg = Release|x64
+		{C522F99D-2A3E-4EF2-99E8-61775E20A3C2}.Release|x64.Build.0 = Release|x64
+		{C522F99D-2A3E-4EF2-99E8-61775E20A3C2}.Release|x86.ActiveCfg = Release|Win32
+		{C522F99D-2A3E-4EF2-99E8-61775E20A3C2}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
