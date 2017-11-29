@@ -1,12 +1,24 @@
 #pragma once
 
+#define ColorMaskR 0x00ff0000
+#define ColorMaskG 0x0000ff00
+#define ColorMaskB 0x000000ff
+
 class color_t
 {
 public:
-	color_t(float colorValue);
 	float colorValue;
 
+	color_t(float colorValue);
+
 	float GetColorValue();
+	float GetR();
+	float GetG();
+	float GetB();
+
+	bool SetR(float rValue);
+	bool SetG(float gValue);
+	bool SetB(float bValue);
 
 	// ReturnValue represent whether color value has overrange
 	bool ColorAdd(color_t color);
