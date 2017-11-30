@@ -20,6 +20,8 @@ public:
 	bool SetG(float gValue);
 	bool SetB(float bValue);
 
+	bool SetRGB(float rValue, float gValue, float bValue);
+
 	// ReturnValue represent whether color value has overrange
 	bool ColorAdd(color_t color);
 	bool ColorModulate(color_t color);
