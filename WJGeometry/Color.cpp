@@ -231,3 +231,4 @@ bool color_t::ColorMutiply(float k)
 
 	return overflow;
 }
+
