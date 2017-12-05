@@ -1,5 +1,7 @@
 #pragma once
 
+#include "WJMath.h"
+
 #define ColorMaskR 0x00ff0000
 #define ColorMaskG 0x0000ff00
 #define ColorMaskB 0x000000ff

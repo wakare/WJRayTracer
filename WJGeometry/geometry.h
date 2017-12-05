@@ -33,6 +33,8 @@ enum RenderMode {
 class Material 
 {
 public:
+	Material();
+
 	color_t Ambient;
 	color_t Diffuse;
 	color_t Specular;
@@ -52,6 +54,8 @@ public:
 class IntersectionInfo
 {
 public:
+	IntersectionInfo();
+
 	Vector4 position;
 	Vector4 normal;
 	color_t color;
@@ -71,6 +75,8 @@ public:
 class Sphere:public BaseGraphics
 {
 public:
+	Sphere();
+
 	Vector4 position;
 	float radius;
 	color_t color;		//assume each point is the same color.
@@ -81,6 +87,8 @@ public:
 class Plane:public BaseGraphics
 {
 public:
+	Plane();
+
 	Vector4 normal;		//plane normal vector
 	float distance;		//origin to the plane.
 	color_t color;
@@ -106,6 +114,8 @@ public:
 class PointLight
 {
 public:
+	PointLight();
+
 	Vector4 position;
 	color_t Diffuse;
 	color_t Specular;
@@ -116,6 +126,8 @@ public:
 class Scene 
 {
 public:
+	Scene();
+
 	Camera mainCamera;
 	Sphere sphereList[MAXSPHERECNT];
 	int sphereCnt = 0;

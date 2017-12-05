@@ -1,5 +1,7 @@
 #pragma once
 
+#include <math.h>
+
 #define PI 3.1415926f
 #define FLOAT_DEVIATION 1e-6f
 

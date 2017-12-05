@@ -226,7 +226,11 @@ color_t ApplyLight(PointLight & light, IntersectionInfo & intersectionInf, Ray& 
 	return result;
 }
 
-void Sphere::CalcRayIntersectionInfo(Ray& ray, IntersectionInfo ** pInf) 
+Sphere::Sphere():color(0.0f)
+{
+}
+
+void Sphere::CalcRayIntersectionInfo(Ray& ray, IntersectionInfo ** pInf)
 {
 	Vector4 distance = ray.position - position;
 	distance.w = 1.0f;
@@ -275,6 +279,10 @@ void Sphere::CalcRayIntersectionInfo(Ray& ray, IntersectionInfo ** pInf)
 		(*pInf)->normal.ResetUnitVector();
 		return;
 	}
+}
+
+Plane::Plane():color(0.0f)
+{
 }
 
 void Plane::CalcRayIntersectionInfo(Ray& ray, IntersectionInfo ** pInf)
@@ -449,72 +457,8 @@ void InitCamera(Camera & mainCamera)
 	mainCamera.visibleDistance = 1000.0f;
 }
 
-color_t ColorModulate(color_t color1, color_t color2)
+Scene::Scene()
 {
-	color_t result = 0x0;
-	color_t R1 = CMID((color1 & 0x00FF0000) >> 16);
-	color_t G1 = CMID((color1 & 0x0000FF00) >> 8);
-	color_t B1 = CMID((color1 & 0x000000FF));
-	color_t R2 = CMID((color2 & 0x00FF0000) >> 16);
-	color_t G2 = CMID((color2 & 0x0000FF00) >> 8);
-	color_t B2 = CMID((color2 & 0x000000FF));
-	result = ((R1 * R2 / 255) << 16 | (G1 * G2 / 255) << 8) | (B1 * B2 / 255);
-	return result;
-}
-
-color_t ColorAdd(color_t color1, color_t color2)
-{
-	color_t result = 0x0;
-	color_t R1 = CMID((color1 & 0x00FF0000) >> 16);
-	color_t G1 = CMID((color1 & 0x0000FF00) >> 8);
-	color_t B1 = CMID((color1 & 0x000000FF));
-	color_t R2 = CMID((color2 & 0x00FF0000) >> 16);
-	color_t G2 = CMID((color2 & 0x0000FF00) >> 8);
-	color_t B2 = CMID((color2 & 0x000000FF));
-	color_t R = CMID(R1 + R2);
-	color_t G = CMID(G1 + G2);
-	color_t B = CMID(B1 + B2);
-	result = (R << 16) | (G << 8) | B;
-	return result;
-}
-
-color_t ColorMutiply(color_t color1, float k)
-{
-	k = (k > 1.0f) ? 1.0f : ((k < .0f) ? .0f : k);
-	color_t result = 0x0;
-	color_t R1 = CMID((color1 & 0x00FF0000) >> 16);
-	color_t G1 = CMID((color1 & 0x0000FF00) >> 8);
-	color_t B1 = CMID((color1 & 0x000000FF));
-	R1 *= k;
-	G1 *= k;
-	B1 *= k;
-	result = (R1 << 16) | (G1 << 8) | B1;
-	return result;
-}
-
-color_t ColorMerge(color_t sourceColor, color_t mergeColor, float mergeRatio)
-{
-	mergeRatio = (mergeRatio > 1.0f) ? 1.0f : ((mergeRatio < 0.0f) ? 0.0f : mergeRatio);
-	color_t result = 0x0;
-	result = ColorAdd(ColorMutiply(sourceColor, 1.0f - mergeRatio), ColorMutiply(mergeColor, mergeRatio));
-	return result;
-}
-
-color_t GammaCorrection(color_t sourceColor)
-{
-	color_t resultColor = 0x0;
-
-	color_t R = CMID((sourceColor & 0x00FF0000) >> 16);
-	color_t G = CMID((sourceColor & 0x0000FF00) >> 8);
-	color_t B = CMID((sourceColor & 0x000000FF));
-
-	R = pow(R / 255.0f, 1 / GAMMA_RATIO) * 255;
-	G = pow(G / 255.0f, 1 / GAMMA_RATIO) * 255;
-	B = pow(B / 255.0f, 1 / GAMMA_RATIO) * 255;
-
-	resultColor = (R << 16) | (G << 8) | B;
-
-	return resultColor;
 }
 
 void Scene::ApplyMatrix(Matrix4 viewMatrix)
@@ -554,11 +498,23 @@ void Render(color_t* pData, int width, int height)
 		{
 			Ray pixelRay = GenerateRay(i / (float)width, j / (float)height, scene.mainCamera.fovy, height / (float)width);
 			color_t pixelColor = RayTrace(pixelRay, scene, TRACE_COUNT, scene.defaultRefractiveness);
-			*(pData + j * width + i) = GammaCorrection (pixelColor);
+			*(pData + j * width + i) = pixelColor.GammaCorrection();
 		}
 		float completePercent = 100 * i / (float)(width);
 
 		//Output current rendering progress rate 
 		std::cout << "Render complete:" << completePercent << "%!" << std::endl;
 	}
+}
+
+IntersectionInfo::IntersectionInfo() :color(0.0f),material()
+{
+}
+
+Material::Material():Ambient(0.0f),Diffuse(0.0f),Specular(0.0f),Emissive(0.0f)
+{
+}
+
+PointLight::PointLight():Diffuse(0.0f),Specular(0.0f),Ambient(0.0f)
+{
 }

@@ -39,29 +39,29 @@ float color_t::GetColorValue()
 
 float color_t::GetR()
 {
-	int rValue = static_cast<int>(this->colorValue) & ColorMaskR;
-	return rValue / 255.0f;
+	int nRValue = static_cast<int>(this->colorValue) & ColorMaskR;
+	return nRValue / 255.0f;
 }
 
 float color_t::GetG()
 {
-	int gValue = static_cast<int>(this->colorValue) & ColorMaskG;
-	return gValue / 255.0f;
+	int nGValue = static_cast<int>(this->colorValue) & ColorMaskG;
+	return nGValue / 255.0f;
 }
 
 float color_t::GetB()
 {
-	int bValue = static_cast<int>(this->colorValue) & ColorMaskB;
-	return bValue / 255.0f;
+	int nBValue = static_cast<int>(this->colorValue) & ColorMaskB;
+	return nBValue / 255.0f;
 }
 
 bool color_t::SetR(float rValue)
 {
-	int r = rValue * 255;
-	if (0 <= r && r <= 255)
+	int nRValue = rValue * 255;
+	if (0 <= nRValue && nRValue <= 255)
 	{
 		int colorGB = static_cast<int>(this->colorValue) & (ColorMaskB | ColorMaskG);
-		int colorR = r << 16;
+		int colorR = nRValue << 16;
 		this->colorValue = _ConvertIntToFloat( colorR | colorGB);
 
 		return true;
@@ -71,11 +71,11 @@ bool color_t::SetR(float rValue)
 
 bool color_t::SetG(float gValue)
 {
-	int g = gValue * 255;
-	if (0 <= g && g <= 255)
+	int nGValue = gValue * 255;
+	if (0 <= nGValue && nGValue <= 255)
 	{
 		int colorRB = static_cast<int>(this->colorValue) & (ColorMaskB | ColorMaskR);
-		int colorG = g << 16;
+		int colorG = nGValue << 16;
 		this->colorValue = _ConvertIntToFloat(colorG | colorRB);
 
 		return true;
@@ -85,11 +85,11 @@ bool color_t::SetG(float gValue)
 
 bool color_t::SetB(float bValue)
 {
-	int b = bValue * 255;
-	if (0 <= b && b <= 255)
+	int nBValue = bValue * 255;
+	if (0 <= nBValue && nBValue <= 255)
 	{
 		int colorRG = static_cast<int>(this->colorValue) & (ColorMaskG | ColorMaskR);
-		int colorB = b << 16;
+		int colorB = nBValue << 16;
 		this->colorValue = _ConvertIntToFloat (colorB | colorRG);
 
 		return true;
@@ -119,11 +119,11 @@ bool color_t::SetRGB(float rValue, float gValue, float bValue)
 		bValue = _GetRangeValue(bValue, 0.0f, 1.0f);
 	}
 
-	int r = rValue * 255.0f;
-	int g = gValue * 255.0f;
-	int b = bValue * 255.0f;
+	int nRValue = rValue * 255.0f;
+	int nGValue = gValue * 255.0f;
+	int nBValue = bValue * 255.0f;
 	
-	int colorResult = (r << 16) | (g << 8) | (b);
+	int colorResult = (nRValue << 16) | (nGValue << 8) | (nBValue);
 
 	colorValue = _ConvertIntToFloat(colorResult);
 
@@ -134,33 +134,33 @@ bool color_t::ColorAdd(color_t color)
 {
 	bool overflow = false;
 
-	float rValue = this->GetR() + color.GetR();
-	float gValue = this->GetG() + color.GetG();
-	float bValue = this->GetB() + color.GetB();
+	float fRValue = this->GetR() + color.GetR();
+	float fGValue = this->GetG() + color.GetG();
+	float fBValue = this->GetB() + color.GetB();
 
-	if (rValue > 1.0f || rValue < 0.0f)
+	if (fRValue > 1.0f || fRValue < 0.0f)
 	{
 		overflow = true;
-		rValue = _GetRangeValue(rValue, 0.0f, 1.0f);
+		fRValue = _GetRangeValue(fRValue, 0.0f, 1.0f);
 	}
 
-	if (gValue > 1.0f || gValue < 0.0f)
+	if (fGValue > 1.0f || fGValue < 0.0f)
 	{
 		overflow = true;
-		gValue = _GetRangeValue(gValue, 0.0f, 1.0f);
+		fGValue = _GetRangeValue(fGValue, 0.0f, 1.0f);
 	}
 
-	if (bValue > 1.0f || bValue < 0.0f)
+	if (fBValue > 1.0f || fBValue < 0.0f)
 	{
 		overflow = true;
-		bValue = _GetRangeValue(bValue, 0.0f, 1.0f);
+		fBValue = _GetRangeValue(fBValue, 0.0f, 1.0f);
 	}
 
-	int r = rValue * 255.0f;
-	int g = gValue * 255.0f;
-	int b = bValue * 255.0f;
+	int nRValue = fRValue * 255.0f;
+	int nGValue = fGValue * 255.0f;
+	int nBValue = fBValue * 255.0f;
 
-	int colorResult = (r << 16) | (g << 8) | (b);
+	int colorResult = (nRValue << 16) | (nGValue << 8) | (nBValue);
 	this->colorValue = _ConvertIntToFloat(colorResult);
 
 	return overflow;
@@ -200,35 +200,54 @@ bool color_t::ColorMutiply(float k)
 {
 	bool overflow = false;
 	
-	float rValue = GetR() * k;
-	float gValue = GetG() * k;
-	float bValue = GetB() * k;
+	float fRValue = GetR() * k;
+	float fGValue = GetG() * k;
+	float fBValue = GetB() * k;
 
-	if (rValue > 1.0f || rValue < 0.0f)
+	if (fRValue > 1.0f || fRValue < 0.0f)
 	{
 		overflow = true;
-		rValue = _GetRangeValue(rValue, 0.0f, 1.0f);
+		fRValue = _GetRangeValue(fRValue, 0.0f, 1.0f);
 	}
 
-	if (gValue > 1.0f || gValue < 0.0f)
+	if (fGValue > 1.0f || fGValue < 0.0f)
 	{
 		overflow = true;
-		gValue = _GetRangeValue(gValue, 0.0f, 1.0f);
+		fGValue = _GetRangeValue(fGValue, 0.0f, 1.0f);
 	}
 
-	if (bValue > 1.0f || bValue < 0.0f)
+	if (fBValue > 1.0f || fBValue < 0.0f)
 	{
 		overflow = true;
-		bValue = _GetRangeValue(bValue, 0.0f, 1.0f);
+		fBValue = _GetRangeValue(fBValue, 0.0f, 1.0f);
 	}
 
-	int r = rValue * 255.0f;
-	int g = gValue * 255.0f;
-	int b = bValue * 255.0f;
-
-	int colorResult = (r<<16) | (g<<8) | (b);
-	colorValue = _ConvertIntToFloat(colorResult);
+	SetRGB(fRValue, fGValue, fBValue);
 
 	return overflow;
 }
 
+bool color_t::ColorMerge(color_t mergeColor, float ratio)
+{
+	float fRValue = GetR() * (1 - ratio) + mergeColor.GetR() * ratio;
+	float fGValue = GetG() * (1 - ratio) + mergeColor.GetG() * ratio;
+	float fBValue = GetB() * (1 - ratio) + mergeColor.GetB() * ratio;
+
+	SetRGB(fRValue, fGValue, fBValue);
+}
+
+bool color_t::GammaCorrection()
+{
+	const float GammaRatio = 2.2f;
+
+	float fRValue = GetR();
+	float fGValue = GetG();
+	float fBValue = GetB();
+
+	fRValue = pow(fRValue, 1 / GammaRatio);
+	fGValue = pow(fGValue, 1 / GammaRatio);
+	fBValue = pow(fBValue, 1 / GammaRatio);
+
+	SetRGB(fRValue, fGValue, fBValue);
+
+}
