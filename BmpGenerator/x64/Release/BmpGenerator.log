@@ -3,4 +3,4 @@ BmpOutput.cpp(1): warning C4103: 包括标题后更改了对齐方式，可能�
 BmpOutput.cpp(10): warning C4101: “y”: 未引用的局部变量
 BmpOutput.cpp(11): warning C4101: “index”: 未引用的局部变量
 BmpOutput.cpp(10): warning C4101: “x”: 未引用的局部变量
-  BmpGenerator.vcxproj -> C:\Users\msi-cn\documents\visual studio 2017\Projects\myRayTracer\x64\Release\BmpGenerator.lib
+  BmpGenerator.vcxproj -> C:\Users\Administrator\Documents\GitHub\WJRayTracer\x64\Release\BmpGenerator.lib

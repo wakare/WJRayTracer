@@ -1,7 +1,4 @@
-﻿C:\Program Files (x86)\Microsoft Visual Studio\2017\Professional\Common7\IDE\VC\VCTargets\Microsoft.CppBuild.targets(387,5): warning MSB8028: 中间目录(x64\Release\)包含从另一个项目(myRayTracer.vcxproj)共享的文件。   这会导致错误的清除和重新生成行为。
-  main.cpp
-main.cpp(5): warning C4103: 包括标题后更改了对齐方式，可能是由于缺少 #pragma pack(pop)
-  正在生成代码
-  All 62 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+﻿  正在生成代码
+  All 76 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
   已完成代码的生成
-  myRayTracer.vcxproj -> C:\Users\msi-cn\documents\visual studio 2017\Projects\myRayTracer\x64\Release\WJRayTracer.exe
+  myRayTracer.vcxproj -> C:\Users\Administrator\Documents\GitHub\WJRayTracer\x64\Release\WJRayTracer.exe

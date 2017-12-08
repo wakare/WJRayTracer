@@ -132,7 +132,7 @@ color_t RayTrace(Ray& eyeRay, Scene& scene, unsigned int maxRayTraceDepth, float
 	color_t reflectColor = 0x0;
 	for (int i = 0; i < VisibleLightCount; ++i)
 	{
-		resultColor = ColorAdd(resultColor, ApplyLight(*VisibleLightArray[i], nearestInf, eyeRay));
+		resultColor.ColorAdd(ApplyLight(*VisibleLightArray[i], nearestInf, eyeRay));
 	}
 
 	if (maxRayTraceDepth > 0 && nearestInf.material.reflectiveness > 0.0f)
@@ -168,9 +168,9 @@ color_t RayTrace(Ray& eyeRay, Scene& scene, unsigned int maxRayTraceDepth, float
 		}
 	}
 
-	resultColor = ColorAdd(ColorMutiply(resultColor, 1 - nearestInf.material.reflectiveness - nearestInf.material.refractiveness), 
-		ColorMutiply(reflectColor, nearestInf.material.reflectiveness));
-	resultColor = ColorAdd(resultColor, ColorMutiply(refractionColor, nearestInf.material.refractiveness));
+	resultColor.ColorMutiply(1 - nearestInf.material.reflectiveness - nearestInf.material.refractiveness);
+	resultColor.ColorAdd(reflectColor.ColorMutiply(nearestInf.material.reflectiveness));
+	resultColor.ColorAdd(refractionColor.ColorMutiply(nearestInf.material.refractiveness));
 
 	return resultColor;
 
@@ -196,7 +196,7 @@ Ray GenerateRay(float x, float y, float fovAngle, float aspect)
 
 color_t ApplyLight(PointLight & light, IntersectionInfo & intersectionInf, Ray& ray)
 {
-	color_t result = 0x0;
+	color_t result = color_t(0x0);
 	color_t Diffuse = 0x0;
 	color_t Specular = 0x0;
 	color_t Ambient = 0x0;
@@ -208,21 +208,27 @@ color_t ApplyLight(PointLight & light, IntersectionInfo & intersectionInf, Ray& 
 	Vector4 eyeDir = -ray.direction;
 	eyeDir.ResetUnitVector();
 
-	Ambient = ColorModulate(light.Ambient, intersectionInf.material.Ambient);
-	Ambient = ColorModulate(Ambient, intersectionInf.color);
+	Ambient = light.Ambient;
+	Ambient.ColorModulate(intersectionInf.material.Ambient);
+	Ambient.ColorModulate(intersectionInf.color);
 
-	Diffuse = ColorModulate(light.Diffuse, intersectionInf.material.Diffuse);
+	Diffuse = light.Diffuse;
+	Diffuse.ColorModulate(intersectionInf.material.Diffuse);
 	float k = fmax(0.0f, (-lightDir) * intersectionInf.normal);
-	Diffuse = ColorModulate(Diffuse, intersectionInf.color);
-	Diffuse = ColorMutiply(Diffuse, k);
+	Diffuse.ColorModulate(intersectionInf.color);
+	Diffuse.ColorMutiply(k);
 
 	float SpecTemp = eyeDir * reflectDir;
 	SpecTemp = (SpecTemp > 0.0f) ? SpecTemp : 0.0f;
 	SpecTemp = pow(SpecTemp, light.power);
-	Specular = ColorModulate(light.Specular, 0xffffff);
-	Specular = ColorMutiply(Specular, SpecTemp);
-	result = ColorAdd(Diffuse, Ambient);
-	result = ColorAdd(result, Specular);
+	Specular = light.Specular;
+	Specular.ColorModulate(0xffffff);
+	Specular.ColorMutiply(SpecTemp);
+
+	result = Diffuse;
+	result.ColorAdd(Ambient);
+	result.ColorAdd(Specular);
+
 	return result;
 }
 
@@ -316,24 +322,19 @@ color_t Plane::SampleTextureMap(float x, float z)
 {
 	int _x = 0;
 	int _z = 0;
+
 	if (x > 0)
-	{
 		_x = x;
-	}
 	else
-	{
 		_x = x - 1;
-	}
+	
 	if (z > 0)
-	{
 		_z = z;
-	}
 	else
-	{
 		_z = z - 1;
-	}
+
 	int temp = _x + _z;
-	color result = ((temp & 0x1) ? COLOR_WHITE : COLOR_BLACK);
+	color_t result = color_t((temp & 0x1) ? COLOR_WHITE : COLOR_BLACK);
 	return result;
 }
 

@@ -32,6 +32,26 @@ color_t::color_t(float colorValue)
 	this->colorValue = colorValue;
 }
 
+color_t::color_t(int colorValue)
+{
+	this->colorValue = _ConvertIntToFloat(colorValue);
+}
+
+void color_t::operator=(float colorValue)
+{
+	this->colorValue = colorValue;
+}
+
+void color_t::operator=(int colorValue)
+{
+	this->colorValue = _ConvertIntToFloat(colorValue);
+}
+
+void color_t::operator=(color_t colorValue)
+{
+	this->colorValue = colorValue.colorValue;
+}
+
 float color_t::GetColorValue()
 {
 	return colorValue;
@@ -238,16 +258,67 @@ bool color_t::ColorMerge(color_t mergeColor, float ratio)
 
 bool color_t::GammaCorrection()
 {
+	bool IsOverFlow = false;
 	const float GammaRatio = 2.2f;
 
 	float fRValue = GetR();
 	float fGValue = GetG();
 	float fBValue = GetB();
 
+	if (fRValue > 1.0f || fRValue < 0.0f)
+		IsOverFlow = true;
+
+	if (fGValue > 1.0f || fGValue < 0.0f)
+		IsOverFlow = true;
+
+	if (fBValue > 1.0f || fBValue < 0.0f)
+		IsOverFlow = true;
+
 	fRValue = pow(fRValue, 1 / GammaRatio);
 	fGValue = pow(fGValue, 1 / GammaRatio);
 	fBValue = pow(fBValue, 1 / GammaRatio);
 
 	SetRGB(fRValue, fGValue, fBValue);
+	
+	return IsOverFlow;
+}
 
+color_t color_t::ColorModulate(color_t color1, color_t color2)
+{
+	color_t result = color1.colorValue;
+	result.ColorModulate(color2);
+
+	return result;
+}
+
+color_t color_t::ColorAdd(color_t color1, color_t color2)
+{
+	color_t result = color1.colorValue;
+	result.ColorAdd(color2);
+
+	return result;
+}
+
+color_t color_t::ColorMutiply(color_t color1, float k)
+{
+	color_t result = color1.colorValue;
+	result.ColorMutiply(k);
+
+	return result;
+}
+
+color_t color_t::ColorMerge(color_t sourceColor, color_t mergeColor, float ratio)
+{
+	color_t result = sourceColor.colorValue;
+	result.ColorMerge(mergeColor,ratio);
+
+	return result;
+}
+
+color_t color_t::GammaCorrection(color_t sourceColor)
+{
+	color_t result = sourceColor.colorValue;
+	result.GammaCorrection();
+
+	return result;
 }
