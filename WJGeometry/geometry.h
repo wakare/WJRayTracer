@@ -108,7 +108,7 @@ public:
 	float visibleDistance;
 	float fovy;
 	float aspect;
-	Matrix4 generateLookAtMatrix();
+	Matrix4 GenerateLookAtMatrix();
 };
 
 class PointLight

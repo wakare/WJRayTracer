@@ -1,0 +1,3 @@
+﻿  main.cpp
+c:\users\administrator\documents\github\wjraytracer\myraytracer\main.cpp(5): warning C4103: 包括标题后更改了对齐方式，可能是由于缺少 #pragma pack(pop)
+  myRayTracer.vcxproj -> C:\Users\Administrator\Documents\GitHub\WJRayTracer\x64\Debug\WJRayTracer.exe

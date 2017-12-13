@@ -1,4 +1,6 @@
-﻿  正在生成代码
+﻿  main.cpp
+main.cpp(5): warning C4103: 包括标题后更改了对齐方式，可能是由于缺少 #pragma pack(pop)
+  正在生成代码
   All 76 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
   已完成代码的生成
   myRayTracer.vcxproj -> C:\Users\Administrator\Documents\GitHub\WJRayTracer\x64\Release\WJRayTracer.exe

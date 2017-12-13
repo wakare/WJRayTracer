@@ -1,0 +1,23 @@
+﻿  geometry.cpp
+c:\users\administrator\documents\github\wjraytracer\wjgeometry\geometry.cpp(236): warning C4244: “参数”: 从“float”转换到“int”，可能丢失数据
+c:\users\administrator\documents\github\wjraytracer\wjgeometry\geometry.cpp(291): warning C4244: “参数”: 从“float”转换到“int”，可能丢失数据
+c:\users\administrator\documents\github\wjraytracer\wjgeometry\geometry.cpp(327): warning C4244: “=”: 从“float”转换到“int”，可能丢失数据
+c:\users\administrator\documents\github\wjraytracer\wjgeometry\geometry.cpp(329): warning C4244: “=”: 从“float”转换到“int”，可能丢失数据
+c:\users\administrator\documents\github\wjraytracer\wjgeometry\geometry.cpp(332): warning C4244: “=”: 从“float”转换到“int”，可能丢失数据
+c:\users\administrator\documents\github\wjraytracer\wjgeometry\geometry.cpp(334): warning C4244: “=”: 从“float”转换到“int”，可能丢失数据
+c:\users\administrator\documents\github\wjraytracer\wjgeometry\geometry.cpp(512): warning C4244: “参数”: 从“float”转换到“int”，可能丢失数据
+c:\users\administrator\documents\github\wjraytracer\wjgeometry\geometry.cpp(516): warning C4244: “参数”: 从“float”转换到“int”，可能丢失数据
+c:\users\administrator\documents\github\wjraytracer\wjgeometry\geometry.cpp(520): warning C4244: “参数”: 从“float”转换到“int”，可能丢失数据
+  Color.cpp
+c:\users\administrator\documents\github\wjraytracer\wjgeometry\color.cpp(41): warning C4244: “return”: 从“int32_t”转换到“float”，可能丢失数据
+c:\users\administrator\documents\github\wjraytracer\wjgeometry\color.cpp(66): warning C4244: “初始化”: 从“float”转换到“int”，可能丢失数据
+c:\users\administrator\documents\github\wjraytracer\wjgeometry\color.cpp(80): warning C4244: “初始化”: 从“float”转换到“int”，可能丢失数据
+c:\users\administrator\documents\github\wjraytracer\wjgeometry\color.cpp(94): warning C4244: “初始化”: 从“float”转换到“int”，可能丢失数据
+c:\users\administrator\documents\github\wjraytracer\wjgeometry\color.cpp(128): warning C4244: “初始化”: 从“float”转换到“int”，可能丢失数据
+c:\users\administrator\documents\github\wjraytracer\wjgeometry\color.cpp(129): warning C4244: “初始化”: 从“float”转换到“int”，可能丢失数据
+c:\users\administrator\documents\github\wjraytracer\wjgeometry\color.cpp(130): warning C4244: “初始化”: 从“float”转换到“int”，可能丢失数据
+c:\users\administrator\documents\github\wjraytracer\wjgeometry\color.cpp(264): warning C4244: “=”: 从“double”转换到“float”，可能丢失数据
+c:\users\administrator\documents\github\wjraytracer\wjgeometry\color.cpp(265): warning C4244: “=”: 从“double”转换到“float”，可能丢失数据
+c:\users\administrator\documents\github\wjraytracer\wjgeometry\color.cpp(266): warning C4244: “=”: 从“double”转换到“float”，可能丢失数据
+  正在生成代码...
+  WJGeometry.vcxproj -> C:\Users\Administrator\Documents\GitHub\WJRayTracer\x64\Debug\WJGeometry.lib

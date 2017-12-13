@@ -76,6 +76,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
+    <IncludePath>C:\Users\Administrator\Documents\GitHub\WJRayTracer\WJMath;C:\Users\Administrator\Documents\GitHub\WJRayTracer\WJGeometry;C:\Users\Administrator\Documents\GitHub\WJRayTracer\BmpGenerator;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -106,6 +107,8 @@
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
+      <AdditionalDependencies>
+      </AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -152,12 +155,9 @@
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="output.bmp" />
-  </ItemGroup>
-  <ItemGroup>
-    <Library Include="..\x64\Release\BmpGenerator.lib" />
-    <Library Include="..\x64\Release\WJGeometry.lib" />
-    <Library Include="..\x64\Release\WJMath.lib" />
+    <Library Include="..\x64\Debug\BmpGenerator.lib" />
+    <Library Include="..\x64\Debug\WJGeometry.lib" />
+    <Library Include="..\x64\Debug\WJMath.lib" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

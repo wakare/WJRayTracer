@@ -1,12 +1,6 @@
 #include "Color.h"
 #include <assert.h>
 
-inline float _ConvertIntToFloat(int sourceValue)
-{
-	float* pResult = reinterpret_cast<float*>(&sourceValue);
-	return *(pResult);
-}
-
 inline float _GetRangeValue(float source, float smallest, float largest)
 {
 	assert(smallest < largest);
@@ -27,24 +21,14 @@ Exit0:
 	return source;
 }
 
-color_t::color_t(float colorValue)
-{
-	this->colorValue = colorValue;
-}
-
 color_t::color_t(int colorValue)
-{
-	this->colorValue = _ConvertIntToFloat(colorValue);
-}
-
-void color_t::operator=(float colorValue)
 {
 	this->colorValue = colorValue;
 }
 
 void color_t::operator=(int colorValue)
 {
-	this->colorValue = _ConvertIntToFloat(colorValue);
+	this->colorValue = colorValue;
 }
 
 void color_t::operator=(color_t colorValue)
@@ -59,19 +43,21 @@ float color_t::GetColorValue()
 
 float color_t::GetR()
 {
-	int nRValue = static_cast<int>(this->colorValue) & ColorMaskR;
+	int nRValue = this->colorValue & ColorMaskR;
+	nRValue = nRValue >> 16;
 	return nRValue / 255.0f;
 }
 
 float color_t::GetG()
 {
-	int nGValue = static_cast<int>(this->colorValue) & ColorMaskG;
+	int nGValue = this->colorValue & ColorMaskG;
+	nGValue = nGValue >> 8;
 	return nGValue / 255.0f;
 }
 
 float color_t::GetB()
 {
-	int nBValue = static_cast<int>(this->colorValue) & ColorMaskB;
+	int nBValue = this->colorValue & ColorMaskB;
 	return nBValue / 255.0f;
 }
 
@@ -82,7 +68,7 @@ bool color_t::SetR(float rValue)
 	{
 		int colorGB = static_cast<int>(this->colorValue) & (ColorMaskB | ColorMaskG);
 		int colorR = nRValue << 16;
-		this->colorValue = _ConvertIntToFloat( colorR | colorGB);
+		this->colorValue =  colorR | colorGB;
 
 		return true;
 	}
@@ -95,8 +81,8 @@ bool color_t::SetG(float gValue)
 	if (0 <= nGValue && nGValue <= 255)
 	{
 		int colorRB = static_cast<int>(this->colorValue) & (ColorMaskB | ColorMaskR);
-		int colorG = nGValue << 16;
-		this->colorValue = _ConvertIntToFloat(colorG | colorRB);
+		int colorG = nGValue << 8;
+		this->colorValue = colorG | colorRB;
 
 		return true;
 	}
@@ -109,8 +95,8 @@ bool color_t::SetB(float bValue)
 	if (0 <= nBValue && nBValue <= 255)
 	{
 		int colorRG = static_cast<int>(this->colorValue) & (ColorMaskG | ColorMaskR);
-		int colorB = nBValue << 16;
-		this->colorValue = _ConvertIntToFloat (colorB | colorRG);
+		int colorB = nBValue;
+		this->colorValue = colorB | colorRG;
 
 		return true;
 	}
@@ -145,7 +131,7 @@ bool color_t::SetRGB(float rValue, float gValue, float bValue)
 	
 	int colorResult = (nRValue << 16) | (nGValue << 8) | (nBValue);
 
-	colorValue = _ConvertIntToFloat(colorResult);
+	colorValue = colorResult;
 
 	return overflow;
 }
@@ -176,12 +162,7 @@ bool color_t::ColorAdd(color_t color)
 		fBValue = _GetRangeValue(fBValue, 0.0f, 1.0f);
 	}
 
-	int nRValue = fRValue * 255.0f;
-	int nGValue = fGValue * 255.0f;
-	int nBValue = fBValue * 255.0f;
-
-	int colorResult = (nRValue << 16) | (nGValue << 8) | (nBValue);
-	this->colorValue = _ConvertIntToFloat(colorResult);
+	SetRGB(fRValue, fGValue, fBValue);
 
 	return overflow;
 }
@@ -246,14 +227,20 @@ bool color_t::ColorMutiply(float k)
 
 	return overflow;
 }
-
 bool color_t::ColorMerge(color_t mergeColor, float ratio)
 {
+	bool result = false;
+
+	if (ratio > 1.0f || ratio < 0.0f)
+		result = true;
+
 	float fRValue = GetR() * (1 - ratio) + mergeColor.GetR() * ratio;
 	float fGValue = GetG() * (1 - ratio) + mergeColor.GetG() * ratio;
 	float fBValue = GetB() * (1 - ratio) + mergeColor.GetB() * ratio;
 
 	SetRGB(fRValue, fGValue, fBValue);
+
+	return result;
 }
 
 bool color_t::GammaCorrection()

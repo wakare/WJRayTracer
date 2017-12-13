@@ -31,6 +31,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <Library Include="..\x64\Release\WJMath.lib" />
+    <Library Include="..\x64\Debug\WJMath.lib" />
   </ItemGroup>
 </Project>

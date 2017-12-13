@@ -1,7 +1,7 @@
 #pragma once
 
 #include "WJMath.h"
-
+#include <stdint.h>
 #define ColorMaskR 0x00ff0000
 #define ColorMaskG 0x0000ff00
 #define ColorMaskB 0x000000ff
@@ -9,12 +9,10 @@
 class color_t
 {
 public:
-	float colorValue;
+    int32_t colorValue;
 
-	color_t(float colorValue);
 	color_t(int colorValue);
 
-	void operator=(float colorValue);
 	void operator=(int colorValue);
 	void operator=(color_t colorValue);
 			

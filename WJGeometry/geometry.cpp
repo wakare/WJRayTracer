@@ -1,7 +1,7 @@
 #include "geometry.h"
 #include <iostream>
 
-Matrix4 Camera::generateLookAtMatrix()
+Matrix4 Camera::GenerateLookAtMatrix()
 {
 	float moveArray[4][4] = {
 		1			,0			,0			,0,
@@ -196,7 +196,7 @@ Ray GenerateRay(float x, float y, float fovAngle, float aspect)
 
 color_t ApplyLight(PointLight & light, IntersectionInfo & intersectionInf, Ray& ray)
 {
-	color_t result = color_t(0x0);
+	color_t result = 0x0;
 	color_t Diffuse = 0x0;
 	color_t Specular = 0x0;
 	color_t Ambient = 0x0;
@@ -487,7 +487,7 @@ void Render(color_t* pData, int width, int height)
 	InitScene(scene);
 
 	//Calculate CameraViewMatrix
-	Matrix4 viewMatrix = scene.mainCamera.generateLookAtMatrix();
+	Matrix4 viewMatrix = scene.mainCamera.GenerateLookAtMatrix();
 
 	//Apply ViewMatrix to Scene inner Object
 	scene.ApplyMatrix(viewMatrix);

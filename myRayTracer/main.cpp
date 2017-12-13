@@ -1,6 +1,6 @@
 #include<stdlib.h>
 #include<iostream>
-#include"geometry.h"
+#include"Geometry.h"
 #include"math.h"
 #include"BmpOutput.h"
 

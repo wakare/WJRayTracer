@@ -23,18 +23,13 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="output.bmp">
-      <Filter>资源文件</Filter>
-    </Image>
-  </ItemGroup>
-  <ItemGroup>
-    <Library Include="..\x64\Release\WJMath.lib">
+    <Library Include="..\x64\Debug\BmpGenerator.lib">
       <Filter>WJLib</Filter>
     </Library>
-    <Library Include="..\x64\Release\WJGeometry.lib">
+    <Library Include="..\x64\Debug\WJGeometry.lib">
       <Filter>WJLib</Filter>
     </Library>
-    <Library Include="..\x64\Release\BmpGenerator.lib">
+    <Library Include="..\x64\Debug\WJMath.lib">
       <Filter>WJLib</Filter>
     </Library>
   </ItemGroup>
