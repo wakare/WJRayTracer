@@ -320,18 +320,21 @@ void Plane::CalcRayIntersectionInfo(Ray& ray, IntersectionInfo ** pInf)
 
 color_t Plane::SampleTextureMap(float x, float z)
 {
+	if (x > 1e5 || x < -1e5 || z > 1e5 || z < -1e5)
+		return color_t(0);
+
 	int _x = 0;
 	int _z = 0;
 
 	if (x > 0)
-		_x = x;
+		_x = static_cast<int>(x);
 	else
-		_x = x - 1;
+		_x = static_cast<int>(x) - 1;
 	
 	if (z > 0)
-		_z = z;
+		_z = static_cast<int>(z);
 	else
-		_z = z - 1;
+		_z = static_cast<int>(z) - 1;
 
 	int temp = _x + _z;
 	color_t result = color_t((temp & 0x1) ? COLOR_WHITE : COLOR_BLACK);
@@ -481,7 +484,7 @@ void Scene::ApplyMatrix(Matrix4 viewMatrix)
 	}
 }
 
-void Render(color_t* pData, int width, int height)
+void Render(__int32* pData, int width, int height)
 {
 	Scene scene = Scene();
 	InitScene(scene);
@@ -499,7 +502,8 @@ void Render(color_t* pData, int width, int height)
 		{
 			Ray pixelRay = GenerateRay(i / (float)width, j / (float)height, scene.mainCamera.fovy, height / (float)width);
 			color_t pixelColor = RayTrace(pixelRay, scene, TRACE_COUNT, scene.defaultRefractiveness);
-			*(pData + j * width + i) = pixelColor.GammaCorrection();
+			pixelColor.GammaCorrection();
+			*(pData + j * width + i) = pixelColor.colorValue;
 		}
 		float completePercent = 100 * i / (float)(width);
 

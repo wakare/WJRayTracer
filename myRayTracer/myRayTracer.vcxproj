@@ -76,7 +76,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>C:\Users\Administrator\Documents\GitHub\WJRayTracer\WJMath;C:\Users\Administrator\Documents\GitHub\WJRayTracer\WJGeometry;C:\Users\Administrator\Documents\GitHub\WJRayTracer\BmpGenerator;$(IncludePath)</IncludePath>
+    <IncludePath>../WJMath;../WJGeometry;../BmpGenerator;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>

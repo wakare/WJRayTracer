@@ -18,7 +18,7 @@
 #define POINT_DEVIATION				1e-4f
 #define TRACE_COUNT					5
 #define REFLECT_DEVIATION			1e-6f
-#define GLASS_REFRACTION			1.666f
+#define GLASS_REFRACTION			1.66666f
 #define GAMMA_RATIO					2.2f
 
 #define CMID(x) {((x) < 0 ) ? 0 : (((x) > 255) ? 255 : (x))}
@@ -146,7 +146,7 @@ bool IsSamePosition(Vector4 position1, Vector4 position2);
 
 color_t RayTrace(Ray& ray,Scene& scene,unsigned int Depth, float refractiveness);
 
-void Render(color_t* pData, int width, int height);
+void Render(__int32* pData, int width, int height);
 
 //x,y=>(0,1) assume camera.up(0.0f,1.0f,0.0f) right(1.0f,0.0f,0.0f) eye(0.0f,0.0f,-1.0f)
 Ray GenerateRay(float x, float y,float fovAngle, float aspect);
