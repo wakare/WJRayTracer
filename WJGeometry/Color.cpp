@@ -267,8 +267,7 @@ bool color_t::GammaCorrection()
 
 	SetRGB(fRValue, fGValue, fBValue);
 	
-	return IsOverFlow;
-}
+	return IsOverFlow;}
 
 color_t color_t::ColorModulate(color_t color1, color_t color2)
 {

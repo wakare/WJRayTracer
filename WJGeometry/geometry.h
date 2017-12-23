@@ -15,7 +15,7 @@
 #define MAX_DEPTH					10
 #define WIDTH						1920
 #define HEIGHT						1080
-#define POINT_DEVIATION				1e-4f
+#define POINT_DEVIATION				1e-2f
 #define TRACE_COUNT					5
 #define REFLECT_DEVIATION			1e-6f
 #define GLASS_REFRACTION			1.66666f

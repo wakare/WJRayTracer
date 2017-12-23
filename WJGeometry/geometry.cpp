@@ -92,11 +92,13 @@ IntersectionInfo CalcNearestNonTransparentIntersectionInf(Scene & scene, Ray & r
 	return nearestInf;
 }
 
-bool IsSamePosition(Vector4 position1, Vector4 position2)
+bool IsSamePosition(Vector4 position1, Vector4 position2, float distance)
 {
-	bool result = ((fabs(position1.x - position2.x)) < POINT_DEVIATION) &&
-		((fabs(position1.y - position2.y)) < POINT_DEVIATION) &&
-		((fabs(position1.z - position2.z)) < POINT_DEVIATION);
+	float fDeviation = distance * POINT_DEVIATION;
+
+	bool result = ((fabs(position1.x - position2.x)) < fDeviation) &&
+		((fabs(position1.y - position2.y)) < fDeviation) &&
+		((fabs(position1.z - position2.z)) < fDeviation);
 	return result;
 }
 
@@ -122,7 +124,7 @@ color_t RayTrace(Ray& eyeRay, Scene& scene, unsigned int maxRayTraceDepth, float
 		lightRay.direction = lightDir;
 		lightRay.position = scene.lightList[i].position;
 		lightIntersectionInf = CalcNearestNonTransparentIntersectionInf(scene, lightRay);
-		if (IsSamePosition(lightIntersectionInf.position, nearestInf.position))
+		if (IsSamePosition(lightIntersectionInf.position, nearestInf.position, lightIntersectionInf.t))
 		{
 			VisibleLightArray[VisibleLightCount++] = &scene.lightList[i];
 		}
@@ -296,7 +298,7 @@ void Plane::CalcRayIntersectionInfo(Ray& ray, IntersectionInfo ** pInf)
 	if (*pInf)
 	{
 		delete *pInf;
-		*pInf = 0;
+		*pInf = nullptr;
 	}
 	float temp = normal * ray.direction;
 	if (temp < FLOAT_DEVIATION && temp > -FLOAT_DEVIATION)
@@ -320,9 +322,12 @@ void Plane::CalcRayIntersectionInfo(Ray& ray, IntersectionInfo ** pInf)
 
 color_t Plane::SampleTextureMap(float x, float z)
 {
-	if (x > 1e5 || x < -1e5 || z > 1e5 || z < -1e5)
-		return color_t(0);
-
+//	//test
+//	return color_t(COLOR_RED);
+//
+//	if (x > 1e5 || x < -1e5 || z > 1e5 || z < -1e5)
+//		return color_t(0);
+//
 	int _x = 0;
 	int _z = 0;
 
@@ -400,6 +405,9 @@ void InitScene(Scene& scene)
 	plane.PlanePoint.y = -2.0f;
 	plane.PlanePoint.w = 1.0f;
 	plane.normal.y = 1.0f;
+	plane.normal.x = 0.0f;
+	plane.normal.z = 0.0f;
+	plane.normal.w = 0.0f;
 	plane.distance = 5.0f;
 	plane.mtrl.Ambient = 0x00ffffff;
 	plane.mtrl.Diffuse = 0x00ffffff;
