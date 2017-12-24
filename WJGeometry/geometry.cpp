@@ -171,8 +171,10 @@ color_t RayTrace(Ray& eyeRay, Scene& scene, unsigned int maxRayTraceDepth, float
 	}
 
 	resultColor.ColorMutiply(1 - nearestInf.material.reflectiveness - nearestInf.material.refractiveness);
-	resultColor.ColorAdd(reflectColor.ColorMutiply(nearestInf.material.reflectiveness));
-	resultColor.ColorAdd(refractionColor.ColorMutiply(nearestInf.material.refractiveness));
+	reflectColor.ColorMutiply(nearestInf.material.reflectiveness);
+	resultColor.ColorAdd(reflectColor);
+	refractionColor.ColorMutiply(nearestInf.material.refractiveness);
+	resultColor.ColorAdd(refractionColor);
 
 	return resultColor;
 
@@ -322,12 +324,9 @@ void Plane::CalcRayIntersectionInfo(Ray& ray, IntersectionInfo ** pInf)
 
 color_t Plane::SampleTextureMap(float x, float z)
 {
-//	//test
-//	return color_t(COLOR_RED);
-//
-//	if (x > 1e5 || x < -1e5 || z > 1e5 || z < -1e5)
-//		return color_t(0);
-//
+	if (x > 1e5 || x < -1e5 || z > 1e5 || z < -1e5)
+		return color_t(0);
+
 	int _x = 0;
 	int _z = 0;
 
