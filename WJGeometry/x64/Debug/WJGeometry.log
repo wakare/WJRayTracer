@@ -1,10 +1,4 @@
-﻿  geometry.cpp
-c:\users\msi-cn\documents\visual studio 2017\projects\myraytracer\wjgeometry\geometry.cpp(240): warning C4244: “参数”: 从“float”转换到“int”，可能丢失数据
-c:\users\msi-cn\documents\visual studio 2017\projects\myraytracer\wjgeometry\geometry.cpp(295): warning C4244: “参数”: 从“float”转换到“int”，可能丢失数据
-c:\users\msi-cn\documents\visual studio 2017\projects\myraytracer\wjgeometry\geometry.cpp(523): warning C4244: “参数”: 从“float”转换到“int”，可能丢失数据
-c:\users\msi-cn\documents\visual studio 2017\projects\myraytracer\wjgeometry\geometry.cpp(527): warning C4244: “参数”: 从“float”转换到“int”，可能丢失数据
-c:\users\msi-cn\documents\visual studio 2017\projects\myraytracer\wjgeometry\geometry.cpp(531): warning C4244: “参数”: 从“float”转换到“int”，可能丢失数据
-  Color.cpp
+﻿  Color.cpp
 c:\users\msi-cn\documents\visual studio 2017\projects\myraytracer\wjgeometry\color.cpp(41): warning C4244: “return”: 从“int32_t”转换到“float”，可能丢失数据
 c:\users\msi-cn\documents\visual studio 2017\projects\myraytracer\wjgeometry\color.cpp(66): warning C4244: “初始化”: 从“float”转换到“int”，可能丢失数据
 c:\users\msi-cn\documents\visual studio 2017\projects\myraytracer\wjgeometry\color.cpp(80): warning C4244: “初始化”: 从“float”转换到“int”，可能丢失数据
@@ -16,4 +10,6 @@ c:\users\msi-cn\documents\visual studio 2017\projects\myraytracer\wjgeometry\col
 c:\users\msi-cn\documents\visual studio 2017\projects\myraytracer\wjgeometry\color.cpp(265): warning C4244: “=”: 从“double”转换到“float”，可能丢失数据
 c:\users\msi-cn\documents\visual studio 2017\projects\myraytracer\wjgeometry\color.cpp(266): warning C4244: “=”: 从“double”转换到“float”，可能丢失数据
   正在生成代码...
+  正在跳过...(未检测到相关更改)
+  geometry.cpp
   WJGeometry.vcxproj -> C:\Users\msi-cn\Documents\Visual Studio 2017\Projects\myRayTracer\x64\Debug\WJGeometry.lib

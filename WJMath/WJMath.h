@@ -8,32 +8,35 @@
 class Matrix4 //4*4 matrix
 {
 public:
-	float M[4][4];
-	Matrix4 operator*(Matrix4);
-	Matrix4(float Array[4][4]);
+	float fMatrixArray[4][4];
+
+	Matrix4 operator*(Matrix4&);
+	Matrix4(float fMatrixArray[4][4]);
 	Matrix4();
 };
 
 class Vector4
 {
 public:
-	float x;
-	float y;
-	float z;
-	float w;
-	Vector4& operator*=(float);
-	Vector4& operator=(Vector4&);
-	Vector4 operator*(Matrix4);
-	Vector4& operator*=(Matrix4);
-	Vector4& operator+=(Vector4);
-	Vector4& operator/=(float);
-	float operator*(Vector4);
-	Vector4 operator*(float);
-	Vector4 operator+(Vector4);
-	Vector4 operator-(Vector4);
-	Vector4 operator-();
-	Vector4 Cross(Vector4);
-	void Normalize(); // reset (x,y,z,w) = (x/w,y/w,z/w,1.0f)
-	void ResetUnitVector();
-	float length();
+	float fX;
+	float fY;
+	float fZ;
+	float fW;
+
+	Vector4&	operator*=(float);
+	Vector4&	operator/=(float);
+	Vector4&	operator=(const Vector4&);
+	Vector4&	operator*(const Matrix4&);
+	Vector4&	operator*=(const Matrix4&);
+	Vector4&	operator+=(const Vector4&);
+	
+	Vector4		operator*(float);
+	Vector4		operator+(const Vector4&);
+	Vector4		operator-(const Vector4&);
+	Vector4		operator-();
+	Vector4		Cross(const Vector4&);
+	float		operator*(Vector4);
+	void		Normalize(); // reset (x,y,z,w) = (x/w,y/w,z/w,1.0f)
+	void		ResetUnitVector();
+	float		length();
 };
