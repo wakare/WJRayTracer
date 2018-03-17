@@ -6,4 +6,7 @@
 *.exe
 *.iobj
 *.obj
+*.bmp
+*.lib
+
 WJRayTracer/
