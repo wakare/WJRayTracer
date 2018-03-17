@@ -1,6 +1,0 @@
-﻿  BmpOutput.cpp
-c:\users\msi-cn\documents\visual studio 2017\projects\myraytracer\bmpgenerator\bmpoutput.cpp(1): warning C4103: 包括标题后更改了对齐方式，可能是由于缺少 #pragma pack(pop)
-c:\users\msi-cn\documents\visual studio 2017\projects\myraytracer\bmpgenerator\bmpoutput.cpp(10): warning C4101: “y”: 未引用的局部变量
-c:\users\msi-cn\documents\visual studio 2017\projects\myraytracer\bmpgenerator\bmpoutput.cpp(11): warning C4101: “index”: 未引用的局部变量
-c:\users\msi-cn\documents\visual studio 2017\projects\myraytracer\bmpgenerator\bmpoutput.cpp(10): warning C4101: “x”: 未引用的局部变量
-  BmpGenerator.vcxproj -> C:\Users\msi-cn\Documents\Visual Studio 2017\Projects\myRayTracer\x64\Debug\BmpGenerator.lib
