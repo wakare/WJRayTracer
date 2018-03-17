@@ -2,19 +2,20 @@
 
 #include "WJMath.h"
 #include <stdint.h>
+
 #define ColorMaskR 0x00ff0000
 #define ColorMaskG 0x0000ff00
 #define ColorMaskB 0x000000ff
 
-class color_t
+class Color_t
 {
 public:
-    int32_t colorValue;
+    int32_t m_colorValue;
 
-	color_t(int colorValue);
+	Color_t(int colorValue);
 
 	void operator=(int colorValue);
-	void operator=(color_t colorValue);
+	void operator=(const Color_t& colorValue);
 			
 	float GetColorValue();
 	float GetR();
@@ -28,16 +29,16 @@ public:
 	bool SetRGB(float rValue, float gValue, float bValue);
 
 	// ReturnValue represent whether color value has over range
-	bool ColorAdd(color_t color);
-	bool ColorModulate(color_t color);
+	bool ColorAdd(Color_t color);
+	bool ColorModulate(Color_t color);
 	bool ColorMutiply(float k);
-	bool ColorMerge(color_t mergeColor, float ratio);
+	bool ColorMerge(Color_t mergeColor, float ratio);
 	bool GammaCorrection();
 
-	//Convenient calculate color value
-	static color_t ColorModulate(color_t color1, color_t color2);
-	static color_t ColorAdd(color_t color1, color_t color2);
-	static color_t ColorMutiply(color_t color1, float k);
-	static color_t ColorMerge(color_t sourceColor, color_t mergeColor, float ratio);
-	static color_t GammaCorrection(color_t sourceColor);
+	// Convenient calculate color value
+	static Color_t ColorModulate(Color_t color1, Color_t color2);
+	static Color_t ColorAdd(Color_t color1, Color_t color2);
+	static Color_t ColorMutiply(Color_t color1, float k);
+	static Color_t ColorMerge(Color_t sourceColor, Color_t mergeColor, float ratio);
+	static Color_t GammaCorrection(Color_t sourceColor);
 };

@@ -21,13 +21,30 @@
 #define REFLECT_DEVIATION			1e-6f
 #define GLASS_REFRACTION			1.66666f
 
-//object material 
 enum RenderMode {
 	SPEC,	//specular material
-	DIFF,	//diffuse material
+	DIFF,	//diffuse  material
 	BOTH	//specular & diffuse material
 };
 
+typedef Color_t LightReflectRatio;
+struct MaterialReflectRatio
+{
+	LightReflectRatio m_Ambient;
+	LightReflectRatio m_Diffuse;
+	LightReflectRatio m_Specular;
+	LightReflectRatio m_Emissive;
+
+	MaterialReflectRatio(
+		LightReflectRatio Ambient,
+		LightReflectRatio Diffuse,
+		LightReflectRatio Specular,
+		LightReflectRatio Emissive) 
+		:m_Ambient(Ambient), m_Diffuse(Diffuse), m_Specular(Specular), m_Emissive(Emissive)
+	{};
+};
+
+//object material 
 class Material 
 {
 public:
@@ -40,7 +57,14 @@ public:
 	color_t		Specular;
 	color_t		Emissive;
 
+<<<<<<< HEAD
+	MaterialReflectRatio m_materialReflectRatio;
+	float reflectiveness;
+	float refractiveness;
+	float refractionRatio;
+=======
 	Material();
+>>>>>>> 7f61243d7facfe4edbfb93d0dfb98b249d55312d
 };
 
 class Ray
@@ -63,6 +87,18 @@ public:
 	Material	material;
 	
 	IntersectionInfo();
+<<<<<<< HEAD
+
+	Vector4		m_position;
+	Vector4		m_normalRay;
+	Color_t		m_color;
+	Material	m_material;
+	
+	float		t;
+	bool		isHit = false;
+	bool		isInner = false;
+=======
+>>>>>>> 7f61243d7facfe4edbfb93d0dfb98b249d55312d
 };
 
 
@@ -72,24 +108,42 @@ public:
 	virtual void CalcRayIntersectionInfo(Ray& ray, IntersectionInfo** pInf) = 0;
 };
 
-class Sphere:public BaseGraphics
+class Sphere: public BaseGraphics
 {
 public:
 	float		fRadius				= 0.0f;
 
+<<<<<<< HEAD
+	Vector4		m_position;
+	float		m_fRadius;
+	Color_t		m_color;		//assume each point is the same color.
+	Material	m_material;
+
+=======
 	Vector4		vectorPosition;
 	color_t		sphereColor;		//assume each point is the same color.
 	Material	mtrlSphere;
 	
 	Sphere();
+>>>>>>> 7f61243d7facfe4edbfb93d0dfb98b249d55312d
 	virtual void CalcRayIntersectionInfo(Ray& ray,IntersectionInfo** pInf);
 };
 
-class Plane:public BaseGraphics
+class Plane: public BaseGraphics
 {
 public:
 	float		fDistance				= 0.0f;	//origin to the plane.
 
+<<<<<<< HEAD
+	Vector4 normal;		//plane normal vector
+	float distance;		//origin to the plane.
+	Color_t color;
+	Vector4 PlanePoint;
+	Material mtrl;
+
+	virtual void CalcRayIntersectionInfo(Ray& ray, IntersectionInfo** pInf);
+	Color_t SampleTextureMap(float x, float z);
+=======
 	Vector4		vectorNormal;		//plane normal vector
 	Vector4		vectorPlanePoint;
 	color_t		planeColor;
@@ -98,6 +152,7 @@ public:
 	Plane();
 	color_t SampleTextureMap(float x, float z);
 	virtual void CalcRayIntersectionInfo(Ray& ray, IntersectionInfo** pInf);
+>>>>>>> 7f61243d7facfe4edbfb93d0dfb98b249d55312d
 };
 
 class Camera 
@@ -120,12 +175,20 @@ class PointLight
 public:
 	float		fPower			= 0.0f;
 
+<<<<<<< HEAD
+	Vector4 position;
+	Color_t Diffuse;
+	Color_t Specular;
+	Color_t Ambient;
+	float power;
+=======
 	Vector4		position;
 	color_t		Diffuse;
 	color_t		Specular;
 	color_t		Ambient;
 
 	PointLight();
+>>>>>>> 7f61243d7facfe4edbfb93d0dfb98b249d55312d
 };
 
 class Scene 
@@ -149,14 +212,14 @@ IntersectionInfo GetNearestIntersectionInfo(Scene& scene, Ray& ray);
 
 bool IsSamePosition(Vector4 position1, Vector4 position2,float distance);
 
-color_t RayTrace(Ray& ray,Scene& scene,unsigned int Depth, float refractiveness);
+Color_t RayTrace(Ray& ray,Scene& scene,unsigned int Depth, float refractiveness);
 
 void Render(__int32* pData, int width, int height);
 
 //x,y=>(0,1) assume camera.up(0.0f,1.0f,0.0f) right(1.0f,0.0f,0.0f) eye(0.0f,0.0f,-1.0f)
 Ray GenerateRay(float x, float y,float fovAngle, float aspect);
 
-color_t ApplyLight(PointLight& light, IntersectionInfo& intersectionInf, Ray& ray);
+Color_t ApplyLight(PointLight& light, IntersectionInfo& intersectionInf, Ray& ray);
 
 void InitScene(Scene& scene);
 

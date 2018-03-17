@@ -21,89 +21,89 @@ Exit0:
 	return source;
 }
 
-color_t::color_t(int colorValue)
+Color_t::Color_t(int colorValue)
 {
-	this->colorValue = colorValue;
+	this->m_colorValue = colorValue;
 }
 
-void color_t::operator=(int colorValue)
+void Color_t::operator=(int colorValue)
 {
-	this->colorValue = colorValue;
+	this->m_colorValue = colorValue;
 }
 
-void color_t::operator=(color_t colorValue)
+void Color_t::operator=(const Color_t& colorValue)
 {
-	this->colorValue = colorValue.colorValue;
+	this->m_colorValue = colorValue.m_colorValue;
 }
 
-float color_t::GetColorValue()
+float Color_t::GetColorValue()
 {
-	return colorValue;
+	return m_colorValue;
 }
 
-float color_t::GetR()
+float Color_t::GetR()
 {
-	int nRValue = this->colorValue & ColorMaskR;
+	int nRValue = this->m_colorValue & ColorMaskR;
 	nRValue = nRValue >> 16;
 	return nRValue / 255.0f;
 }
 
-float color_t::GetG()
+float Color_t::GetG()
 {
-	int nGValue = this->colorValue & ColorMaskG;
+	int nGValue = this->m_colorValue & ColorMaskG;
 	nGValue = nGValue >> 8;
 	return nGValue / 255.0f;
 }
 
-float color_t::GetB()
+float Color_t::GetB()
 {
-	int nBValue = this->colorValue & ColorMaskB;
+	int nBValue = this->m_colorValue & ColorMaskB;
 	return nBValue / 255.0f;
 }
 
-bool color_t::SetR(float rValue)
+bool Color_t::SetR(float rValue)
 {
 	int nRValue = rValue * 255;
 	if (0 <= nRValue && nRValue <= 255)
 	{
-		int colorGB = static_cast<int>(this->colorValue) & (ColorMaskB | ColorMaskG);
+		int colorGB = static_cast<int>(this->m_colorValue) & (ColorMaskB | ColorMaskG);
 		int colorR = nRValue << 16;
-		this->colorValue =  colorR | colorGB;
+		this->m_colorValue =  colorR | colorGB;
 
 		return true;
 	}
 	return false;
 }
 
-bool color_t::SetG(float gValue)
+bool Color_t::SetG(float gValue)
 {
 	int nGValue = gValue * 255;
 	if (0 <= nGValue && nGValue <= 255)
 	{
-		int colorRB = static_cast<int>(this->colorValue) & (ColorMaskB | ColorMaskR);
+		int colorRB = static_cast<int>(this->m_colorValue) & (ColorMaskB | ColorMaskR);
 		int colorG = nGValue << 8;
-		this->colorValue = colorG | colorRB;
+		this->m_colorValue = colorG | colorRB;
 
 		return true;
 	}
 	return false;
 }
 
-bool color_t::SetB(float bValue)
+bool Color_t::SetB(float bValue)
 {
 	int nBValue = bValue * 255;
 	if (0 <= nBValue && nBValue <= 255)
 	{
-		int colorRG = static_cast<int>(this->colorValue) & (ColorMaskG | ColorMaskR);
+		int colorRG = static_cast<int>(this->m_colorValue) & (ColorMaskG | ColorMaskR);
 		int colorB = nBValue;
-		this->colorValue = colorB | colorRG;
+		this->m_colorValue = colorB | colorRG;
 
 		return true;
 	}
 	return false;
 }
 
-bool color_t::SetRGB(float rValue, float gValue, float bValue)
+bool Color_t::SetRGB(float rValue, float gValue, float bValue)
 {
 	bool overflow = false;
 
@@ -131,12 +131,12 @@ bool color_t::SetRGB(float rValue, float gValue, float bValue)
 	
 	int colorResult = (nRValue << 16) | (nGValue << 8) | (nBValue);
 
-	colorValue = colorResult;
+	m_colorValue = colorResult;
 
 	return overflow;
 }
 
-bool color_t::ColorAdd(color_t color)
+bool Color_t::ColorAdd(Color_t color)
 {
 	bool overflow = false;
 
@@ -166,7 +166,7 @@ bool color_t::ColorAdd(color_t color)
 
 	return overflow;
 }
-bool color_t::ColorModulate(color_t color)
+bool Color_t::ColorModulate(Color_t color)
 {
 	bool overflow = false;
 
@@ -197,7 +197,7 @@ bool color_t::ColorModulate(color_t color)
 	return overflow;
 }
 
-bool color_t::ColorMutiply(float k)
+bool Color_t::ColorMutiply(float k)
 {
 	bool overflow = false;
 	
@@ -227,7 +227,7 @@ bool color_t::ColorMutiply(float k)
 
 	return overflow;
 }
-bool color_t::ColorMerge(color_t mergeColor, float ratio)
+bool Color_t::ColorMerge(Color_t mergeColor, float ratio)
 {
 	bool result = false;
 
@@ -243,7 +243,7 @@ bool color_t::ColorMerge(color_t mergeColor, float ratio)
 	return result;
 }
 
-bool color_t::GammaCorrection()
+bool Color_t::GammaCorrection()
 {
 	bool IsOverFlow = false;
 	const float GammaRatio = 2.2f;
@@ -269,41 +269,41 @@ bool color_t::GammaCorrection()
 	
 	return IsOverFlow;}
 
-color_t color_t::ColorModulate(color_t color1, color_t color2)
+Color_t Color_t::ColorModulate(Color_t color1, Color_t color2)
 {
-	color_t result = color1.colorValue;
+	Color_t result = color1.m_colorValue;
 	result.ColorModulate(color2);
 
 	return result;
 }
 
-color_t color_t::ColorAdd(color_t color1, color_t color2)
+Color_t Color_t::ColorAdd(Color_t color1, Color_t color2)
 {
-	color_t result = color1.colorValue;
+	Color_t result = color1.m_colorValue;
 	result.ColorAdd(color2);
 
 	return result;
 }
 
-color_t color_t::ColorMutiply(color_t color1, float k)
+Color_t Color_t::ColorMutiply(Color_t color1, float k)
 {
-	color_t result = color1.colorValue;
+	Color_t result = color1.m_colorValue;
 	result.ColorMutiply(k);
 
 	return result;
 }
 
-color_t color_t::ColorMerge(color_t sourceColor, color_t mergeColor, float ratio)
+Color_t Color_t::ColorMerge(Color_t sourceColor, Color_t mergeColor, float ratio)
 {
-	color_t result = sourceColor.colorValue;
+	Color_t result = sourceColor.m_colorValue;
 	result.ColorMerge(mergeColor,ratio);
 
 	return result;
 }
 
-color_t color_t::GammaCorrection(color_t sourceColor)
+Color_t Color_t::GammaCorrection(Color_t sourceColor)
 {
-	color_t result = sourceColor.colorValue;
+	Color_t result = sourceColor.m_colorValue;
 	result.GammaCorrection();
 
 	return result;
