@@ -51,20 +51,10 @@ public:
 	float		fReflectiveness		= 0.0f;
 	float		fRefractiveness		= 0.0f;
 	float		fRefractionRatio	= 0.0f;
-	
-	color_t		Ambient;
-	color_t		Diffuse;
-	color_t		Specular;
-	color_t		Emissive;
 
-<<<<<<< HEAD
 	MaterialReflectRatio m_materialReflectRatio;
-	float reflectiveness;
-	float refractiveness;
-	float refractionRatio;
-=======
-	Material();
->>>>>>> 7f61243d7facfe4edbfb93d0dfb98b249d55312d
+
+	Material() :m_materialReflectRatio(0x0, 0x0, 0x0, 0x0) {};
 };
 
 class Ray
@@ -81,24 +71,12 @@ public:
 	bool		bIsHit			= false;
 	bool		bIsInner		= false;
 
-	Vector4		position;
-	Vector4		normal;
-	color_t		color;
-	Material	material;
-	
-	IntersectionInfo();
-<<<<<<< HEAD
-
 	Vector4		m_position;
 	Vector4		m_normalRay;
 	Color_t		m_color;
 	Material	m_material;
 	
-	float		t;
-	bool		isHit = false;
-	bool		isInner = false;
-=======
->>>>>>> 7f61243d7facfe4edbfb93d0dfb98b249d55312d
+	IntersectionInfo():m_color(0x0) {};
 };
 
 
@@ -111,48 +89,28 @@ public:
 class Sphere: public BaseGraphics
 {
 public:
-	float		fRadius				= 0.0f;
-
-<<<<<<< HEAD
 	Vector4		m_position;
 	float		m_fRadius;
 	Color_t		m_color;		//assume each point is the same color.
 	Material	m_material;
 
-=======
-	Vector4		vectorPosition;
-	color_t		sphereColor;		//assume each point is the same color.
-	Material	mtrlSphere;
-	
-	Sphere();
->>>>>>> 7f61243d7facfe4edbfb93d0dfb98b249d55312d
+	Sphere() :m_color(0x0) {};
 	virtual void CalcRayIntersectionInfo(Ray& ray,IntersectionInfo** pInf);
 };
 
 class Plane: public BaseGraphics
 {
 public:
-	float		fDistance				= 0.0f;	//origin to the plane.
+	float		fDistance = 0.0f;	//origin to the plane.
 
-<<<<<<< HEAD
-	Vector4 normal;		//plane normal vector
-	float distance;		//origin to the plane.
-	Color_t color;
-	Vector4 PlanePoint;
-	Material mtrl;
-
-	virtual void CalcRayIntersectionInfo(Ray& ray, IntersectionInfo** pInf);
-	Color_t SampleTextureMap(float x, float z);
-=======
 	Vector4		vectorNormal;		//plane normal vector
 	Vector4		vectorPlanePoint;
-	color_t		planeColor;
+	Color_t		planeColor;
 	Material	planeMaterial;
 	
-	Plane();
-	color_t SampleTextureMap(float x, float z);
+	Plane():planeColor(0x0) {};
+	Color_t SampleTextureMap(float x, float z);
 	virtual void CalcRayIntersectionInfo(Ray& ray, IntersectionInfo** pInf);
->>>>>>> 7f61243d7facfe4edbfb93d0dfb98b249d55312d
 };
 
 class Camera 
@@ -175,20 +133,12 @@ class PointLight
 public:
 	float		fPower			= 0.0f;
 
-<<<<<<< HEAD
 	Vector4 position;
 	Color_t Diffuse;
 	Color_t Specular;
 	Color_t Ambient;
-	float power;
-=======
-	Vector4		position;
-	color_t		Diffuse;
-	color_t		Specular;
-	color_t		Ambient;
 
-	PointLight();
->>>>>>> 7f61243d7facfe4edbfb93d0dfb98b249d55312d
+	PointLight():Diffuse(0x0),Specular(0x0),Ambient(0x0) {};
 };
 
 class Scene 
@@ -204,7 +154,7 @@ public:
 	PointLight		lightList[MAXLIGHTCNT];
 	Plane			floors[MAXFLOORCNT];
 
-	Scene();
+	Scene() {};
 	void ApplyMatrix(Matrix4 mat);
 };
 

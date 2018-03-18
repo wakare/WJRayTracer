@@ -8,5 +8,8 @@
 *.obj
 *.bmp
 *.lib
+*.idb
+*.log
+*.ilk
 
 /.vs
