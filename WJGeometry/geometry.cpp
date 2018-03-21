@@ -22,15 +22,13 @@ Matrix4 Camera::GenerateLookAtMatrix()
 	return moveMatrix * rotateMatrix;
 }
 
-IntersectionInfo GetNearestIntersectionInfo(Scene & scene, Ray & ray)
+IntersectionInfo* GetNearestIntersectionInfo(Scene & scene, Ray & ray)
 {
 	IntersectionInfo*		inf = 0;
-	IntersectionInfo		nearestInf;
-	float					t = -1.0f;
+	IntersectionInfo*		nearestInf = nullptr;
+	float					t = -1.0f; // t维护一个距离交点最近的物体的距离
 
-	nearestInf.bIsHit = false;
-	nearestInf.fDistance = -1.0f;
-
+	/*
 	for (int i = 0; i < scene.nSphereCnt; i++)
 	{
 		scene.sphereList[i].CalcRayIntersectionInfo(ray, &inf);
@@ -72,9 +70,33 @@ IntersectionInfo GetNearestIntersectionInfo(Scene & scene, Ray & ray)
 			nearestInf = *inf;
 		}
 	}
-	if (nearestInf.fDistance < .0f)
-		nearestInf.bIsHit = false;
-	
+	*/
+
+	auto itGraphics = scene.m_graphicsObjectVec.begin();
+	while (itGraphics != scene.m_graphicsObjectVec.end())
+	{
+		itGraphics->CalcRayIntersectionInfo(ray, &inf);
+		if (inf == NULL)
+		{
+			itGraphics++;
+			continue;
+		}
+
+		if (t < 0.0f)
+		{
+			t = inf->fDistance;
+			nearestInf = inf;
+		}
+
+		if (t > inf->fDistance)
+		{
+			t = inf->fDistance;
+			nearestInf = inf;
+		}
+
+		itGraphics++;
+	}
+
 	return nearestInf;
 }
 
@@ -93,8 +115,17 @@ bool IsSamePosition(Vector4 position1, Vector4 position2, float distance)
 
 Color_t RayTrace(Ray& eyeRay, Scene& scene, unsigned int maxRayTraceDepth, float refractionRatio)
 {
-	IntersectionInfo nearestInf = GetNearestIntersectionInfo(scene, eyeRay);
-	if (nearestInf.bIsHit == false)
+	int					VisibleLightCount	= 0;
+	
+	Color_t				resultColor			= 0x0;
+	Color_t				reflectColor		= 0x0;
+	IntersectionInfo*	nearestInf			= GetNearestIntersectionInfo(scene, eyeRay);
+
+	Ray								lightRay;
+	IntersectionInfo*				lightIntersectionInf;
+	std::vector<const BaseLight&>	VisibleLightArray;
+
+	if (nearestInf == nullptr)
 	{
 		return DEFAULT_BACKCOLOR;
 	}
@@ -102,36 +133,55 @@ Color_t RayTrace(Ray& eyeRay, Scene& scene, unsigned int maxRayTraceDepth, float
 	//{
 	//	return DEFAULT_BACKCOLOR;
 	//}
-	PointLight* VisibleLightArray[8] = { 0 };
-	int VisibleLightCount = 0;
-	IntersectionInfo lightIntersectionInf;
-	Ray lightRay;
-	for (int i = 0; i < scene.nLightCnt; ++i)
+	//PointLight* VisibleLightArray[8] = { 0 };
+	
+
+	auto itLightObject = scene.m_lightObjectVec.begin();
+	while (itLightObject != scene.m_lightObjectVec.end())
 	{
-		Vector4 lightDir = nearestInf.m_position - scene.lightList[i].position;
+		Vector4 lightDir = nearestInf->m_position - itLightObject->m_position;
 		lightDir.ResetUnitVector();
 		lightRay.direction = lightDir;
-		lightRay.position = scene.lightList[i].position;
+		lightRay.position = itLightObject->m_position;
 		lightIntersectionInf = GetNearestIntersectionInfo(scene, lightRay);
-		if (IsSamePosition(lightIntersectionInf.m_position, nearestInf.m_position, lightIntersectionInf.fDistance))
+		if (IsSamePosition(lightIntersectionInf->m_position, nearestInf->m_position, lightIntersectionInf->fDistance))
+		{
+			VisibleLightArray.push_back(*itLightObject);
+		}
+
+		itLightObject ++;
+	}
+
+	/*for (int i = 0; i < scene.nLightCnt; ++i)
+	{
+		Vector4 lightDir = nearestInf->m_position - scene.lightList[i].m_position;
+		lightDir.ResetUnitVector();
+		lightRay.direction = lightDir;
+		lightRay.position = scene.lightList[i].m_position;
+		lightIntersectionInf = GetNearestIntersectionInfo(scene, lightRay);
+		if (IsSamePosition(lightIntersectionInf->m_position, nearestInf->m_position, lightIntersectionInf->fDistance))
 		{
 			VisibleLightArray[VisibleLightCount++] = &scene.lightList[i];
 		}
 	}
-	Color_t resultColor = 0x0;
-
-	Color_t reflectColor = 0x0;
-	for (int i = 0; i < VisibleLightCount; ++i)
+	*/
+	
+	for (auto itLight : VisibleLightArray)
 	{
-		resultColor.ColorAdd(ApplyLight(*VisibleLightArray[i], nearestInf, eyeRay));
+		resultColor.ColorAdd(itLight.ApplyLightShading(*nearestInf, eyeRay));
 	}
 
-	if (maxRayTraceDepth > 0 && nearestInf.m_material.fReflectiveness > 0.0f)
+	/*for (int i = 0; i < VisibleLightCount; ++i)
+	{
+		resultColor.ColorAdd((*VisibleLightArray[i], *nearestInf, eyeRay));
+	}*/
+
+	if (maxRayTraceDepth > 0 && nearestInf->m_material.fReflectiveness > 0.0f)
 	{
 		Ray reflectRay;
-		reflectRay.direction = eyeRay.direction - nearestInf.m_normalRay *(nearestInf.m_normalRay * eyeRay.direction) * 2;
-		reflectRay.position = nearestInf.m_position - eyeRay.direction * REFLECT_DEVIATION;
-		reflectColor = RayTrace(reflectRay, scene, maxRayTraceDepth - 1, nearestInf.m_material.fRefractionRatio);
+		reflectRay.direction = eyeRay.direction - nearestInf->m_normalRay *(nearestInf->m_normalRay * eyeRay.direction) * 2;
+		reflectRay.position = nearestInf->m_position - eyeRay.direction * REFLECT_DEVIATION;
+		reflectColor = RayTrace(reflectRay, scene, maxRayTraceDepth - 1, nearestInf->m_material.fRefractionRatio);
 
 	}
 	else
@@ -140,35 +190,34 @@ Color_t RayTrace(Ray& eyeRay, Scene& scene, unsigned int maxRayTraceDepth, float
 	}
 
 	Color_t refractionColor = 0x0;
-	if (maxRayTraceDepth > 0 && nearestInf.m_material.fRefractiveness > 0.0f)
+	if (maxRayTraceDepth > 0 && nearestInf->m_material.fRefractiveness > 0.0f)
 	{
 		Ray refractionRay;
-		if (nearestInf.bIsInner)
+		if (nearestInf->bIsInner)
 		{
-			nearestInf.m_material.fRefractionRatio = DEFAULT_REFRACTIONRATIO;
+			nearestInf->m_material.fRefractionRatio = DEFAULT_REFRACTIONRATIO;
 		}
-		float LdivideT = refractionRatio / nearestInf.m_material.fRefractionRatio;
-		float NdotL = -nearestInf.m_normalRay * eyeRay.direction;
+		float LdivideT = refractionRatio / nearestInf->m_material.fRefractionRatio;
+		float NdotL = -nearestInf->m_normalRay * eyeRay.direction;
 		float refractionTemp = 1 - ((1 - NdotL * NdotL) * LdivideT * LdivideT);
 		if (refractionTemp > .0f)
 		{
-			refractionRay.direction = nearestInf.m_normalRay * (LdivideT * NdotL - sqrtf(refractionTemp)) +
+			refractionRay.direction = nearestInf->m_normalRay * (LdivideT * NdotL - sqrtf(refractionTemp)) +
 				eyeRay.direction * LdivideT;
-			refractionRay.position = nearestInf.m_position + eyeRay.direction * REFLECT_DEVIATION;
+			refractionRay.position = nearestInf->m_position + eyeRay.direction * REFLECT_DEVIATION;
 			refractionRay.direction.ResetUnitVector();
 
-			refractionColor = RayTrace(refractionRay, scene, maxRayTraceDepth - 1, nearestInf.m_material.fRefractionRatio);
+			refractionColor = RayTrace(refractionRay, scene, maxRayTraceDepth - 1, nearestInf->m_material.fRefractionRatio);
 		}
 	}
 
-	resultColor.ColorMutiply(1 - nearestInf.m_material.fReflectiveness - nearestInf.m_material.fRefractiveness);
-	reflectColor.ColorMutiply(nearestInf.m_material.fReflectiveness);
+	resultColor.ColorMutiply(1 - nearestInf->m_material.fReflectiveness - nearestInf->m_material.fRefractiveness);
+	reflectColor.ColorMutiply(nearestInf->m_material.fReflectiveness);
 	resultColor.ColorAdd(reflectColor);
-	refractionColor.ColorMutiply(nearestInf.m_material.fRefractiveness);
+	refractionColor.ColorMutiply(nearestInf->m_material.fRefractiveness);
 	resultColor.ColorAdd(refractionColor);
 
 	return resultColor;
-
 }
 
 Ray GenerateRay(float x, float y, float fovAngle, float aspect)
@@ -191,7 +240,7 @@ Ray GenerateRay(float x, float y, float fovAngle, float aspect)
 	result.direction.ResetUnitVector();
 	return result;
 }
-
+/*
 Color_t ApplyLight(PointLight & light, IntersectionInfo & intersectionInf, Ray& ray)
 {
 	Color_t result = 0x0;
@@ -199,7 +248,7 @@ Color_t ApplyLight(PointLight & light, IntersectionInfo & intersectionInf, Ray& 
 	Color_t Specular = 0x0;
 	Color_t Ambient = 0x0;
 
-	Vector4 lightDir = intersectionInf.m_position - light.position;
+	Vector4 lightDir = intersectionInf.m_position - light.m_position;
 	lightDir.ResetUnitVector();
 	Vector4 reflectDir = lightDir - intersectionInf.m_normalRay *(intersectionInf.m_normalRay * lightDir) * 2;
 	reflectDir.ResetUnitVector();
@@ -229,6 +278,7 @@ Color_t ApplyLight(PointLight & light, IntersectionInfo & intersectionInf, Ray& 
 
 	return result;
 }
+*/
 
 void Sphere::CalcRayIntersectionInfo(Ray& ray, IntersectionInfo ** pInf)
 {
@@ -282,6 +332,11 @@ void Sphere::CalcRayIntersectionInfo(Ray& ray, IntersectionInfo ** pInf)
 	}
 }
 
+void Sphere::ApplyMatrixTransform(const Matrix4 & viewMatrix)
+{
+	m_position *= viewMatrix;
+}
+
 void Plane::CalcRayIntersectionInfo(Ray& ray, IntersectionInfo ** pInf)
 {
 	if (*pInf)
@@ -310,6 +365,14 @@ void Plane::CalcRayIntersectionInfo(Ray& ray, IntersectionInfo ** pInf)
 	}
 }
 
+void Plane::ApplyMatrixTransform(const Matrix4 & viewMatrix)
+{
+	vectorNormal *= viewMatrix;
+	vectorNormal.ResetUnitVector();
+	vectorPlanePoint *= viewMatrix;
+	fDistance = fabs(vectorPlanePoint * vectorNormal);
+}
+
 Color_t Plane::SampleTextureMap(float x, float z)
 {
 	if (x > 1e5 || x < -1e5 || z > 1e5 || z < -1e5)
@@ -320,6 +383,96 @@ Color_t Plane::SampleTextureMap(float x, float z)
 
 	Color_t result = Color_t(((nX + nZ) & 0x1) ? COLOR_WHITE : COLOR_BLACK);
 	return result;
+}
+
+void PointLight::ApplyMatrixTransform(const Matrix4 & transformMatrix)
+{
+	m_position *= transformMatrix;
+}
+
+Color_t PointLight::ApplyLightShading(IntersectionInfo & intersectionInf, Ray & ray)
+{
+	Color_t result = 0x0;
+	Color_t Diffuse = 0x0;
+	Color_t Specular = 0x0;
+	Color_t Ambient = 0x0;
+
+	Vector4 lightDir = intersectionInf.m_position - m_position;
+	lightDir.ResetUnitVector();
+	Vector4 reflectDir = lightDir - intersectionInf.m_normalRay *(intersectionInf.m_normalRay * lightDir) * 2;
+	reflectDir.ResetUnitVector();
+	Vector4 eyeDir = -ray.direction;
+	eyeDir.ResetUnitVector();
+
+	Ambient = Ambient;
+	Ambient.ColorModulate(intersectionInf.m_material.m_materialReflectRatio.m_Ambient);
+	Ambient.ColorModulate(intersectionInf.m_color);
+
+	Diffuse = Diffuse;
+	Diffuse.ColorModulate(intersectionInf.m_material.m_materialReflectRatio.m_Diffuse);
+	float k = fmax(0.0f, (-lightDir) * intersectionInf.m_normalRay);
+	Diffuse.ColorModulate(intersectionInf.m_color);
+	Diffuse.ColorMutiply(k);
+
+	float SpecTemp = eyeDir * reflectDir;
+	SpecTemp = (SpecTemp > 0.0f) ? SpecTemp : 0.0f;
+	SpecTemp = pow(SpecTemp, fPower);
+	Specular = Specular;
+	Specular.ColorModulate(0xffffff);
+	Specular.ColorMutiply(SpecTemp);
+
+	result = Diffuse;
+	result.ColorAdd(Ambient);
+	result.ColorAdd(Specular);
+
+	return result;
+}
+
+bool Scene::AddGraphics(const BaseGraphics & graphics)
+{
+	bool bResult = false;
+	m_graphicsObjectVec.push_back(graphics);
+	bResult = true;
+
+	return bResult;
+}
+
+bool Scene::AddLight(const BaseLight & light)
+{
+	bool bResult = false;
+	m_lightObjectVec.push_back(light);
+	bResult = true;
+
+	return bResult;
+}
+
+void Scene::ApplyMatrix(const Matrix4& viewMatrix)
+{
+	for (auto gameObject : m_graphicsObjectVec)
+	{
+		gameObject.ApplyMatrixTransform(viewMatrix);
+	}
+
+	for (auto gameObject : m_lightObjectVec)
+	{
+		gameObject.ApplyMatrixTransform(viewMatrix);
+	}
+
+	/*for (int i = 0; i < nSphereCnt; ++i)
+	{
+	sphereList[i].m_position *= viewMatrix;
+	}
+	for (int i = 0; i < nFloorCnt; ++i)
+	{
+	floors[i].vectorNormal *= viewMatrix;
+	floors[i].vectorNormal.ResetUnitVector();
+	floors[i].vectorPlanePoint *= viewMatrix;
+	floors[i].fDistance = fabs(floors[i].vectorPlanePoint * floors[i].vectorNormal);
+	}
+	for (int i = 0; i < nLightCnt; ++i)
+	{
+	lightList[i].m_position *= viewMatrix;
+	}*/
 }
 
 void InitScene(Scene& scene)
@@ -345,7 +498,8 @@ void InitScene(Scene& scene)
 	ball0.m_position.fW = 1.0f;
 
 	ball0.m_fRadius = 1.0f;
-	scene.sphereList[scene.nSphereCnt++] = ball0;
+	scene.AddGraphics(ball0);
+	//scene.sphereList[scene.nSphereCnt++] = ball0;
 
 	Sphere ball1 = Sphere();
 	ball1.m_color = 0x00ff0000;
@@ -365,7 +519,7 @@ void InitScene(Scene& scene)
 	ball1.m_position.fW = 1.0f;
 
 	ball1.m_fRadius = 2.0f;
-	scene.sphereList[scene.nSphereCnt++] = ball1;
+	scene.AddGraphics(ball1);
 
 	Sphere ball2 = Sphere();
 	ball2.m_color = 0x0000ff00;
@@ -385,9 +539,9 @@ void InitScene(Scene& scene)
 	ball2.m_position.fW = 1.0f;
 
 	ball2.m_fRadius = 1.0f;
-	scene.sphereList[scene.nSphereCnt++] = ball2;
+	scene.AddGraphics(ball2);
 
-	Plane plane = Plane();
+	Plane plane;
 	plane.planeColor = 0x000000ff;
 
 	plane.vectorPlanePoint.fY = -2.0f;
@@ -408,21 +562,22 @@ void InitScene(Scene& scene)
 	plane.planeMaterial.fRefractionRatio = .0f;
 	plane.planeMaterial.fRefractiveness = .0f;
 
-	scene.floors[scene.nFloorCnt++] = plane;
+	scene.AddGraphics(plane);
 
-	PointLight light = PointLight();
+	PointLight light;
 	light.Ambient = 0x202020;
 	light.Diffuse = 0x808080;
 	light.Specular = 0xffffff;
 
 	light.fPower = 2.0f;
 
-	light.position.fX = -1.0f;
-	light.position.fY = 5.0f;
-	light.position.fZ = 2.0f;
-	light.position.fW = 1.0f;
+	light.m_position.fX = -1.0f;
+	light.m_position.fY = 5.0f;
+	light.m_position.fZ = 2.0f;
+	light.m_position.fW = 1.0f;
 
-	scene.lightList[scene.nLightCnt++] = light;
+	scene.AddLight(light);
+	//scene.lightList[scene.nLightCnt++] = light;
 
 	/*PointLight light2 = PointLight();
 	light2.Ambient = 0x202020;
@@ -472,24 +627,7 @@ void InitCamera(Camera & mainCamera)
 	mainCamera.fVisibleDistance = 1000.0f;
 }
 
-void Scene::ApplyMatrix(Matrix4 viewMatrix)
-{
-	for (int i = 0; i < nSphereCnt; ++i)
-	{
-		sphereList[i].m_position *= viewMatrix;
-	}
-	for (int i = 0; i < nFloorCnt; ++i)
-	{
-		floors[i].vectorNormal *= viewMatrix;
-		floors[i].vectorNormal.ResetUnitVector();
-		floors[i].vectorPlanePoint *= viewMatrix;
-		floors[i].fDistance = fabs(floors[i].vectorPlanePoint * floors[i].vectorNormal);
-	}
-	for (int i = 0; i < nLightCnt; ++i)
-	{
-		lightList[i].position *= viewMatrix;
-	}
-}
+
 
 void Render(__int32* pData, int width, int height)
 {
@@ -519,3 +657,5 @@ void Render(__int32* pData, int width, int height)
 		std::cout << "Render complete:" << completePercent << "%!" << std::endl;
 	}
 }
+
+
