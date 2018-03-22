@@ -127,7 +127,7 @@ public:
 class Plane: public BaseGraphics
 {
 public:
-	float		fDistance = 0.0f;	//origin to the plane.
+	float		fDistance = 0.0f;	//origin to the plane->
 
 	Vector4		vectorNormal;		//plane normal vector
 	Vector4		vectorPlanePoint;

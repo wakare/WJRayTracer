@@ -205,8 +205,8 @@ Matrix4& getPerspectiveProjMatrix(float theta, float zn, float zf, float widthHe
 	//zf -- far Z clipPlane
 	//widthHeightScale -- the value of Width / Height
 
-	//step1. proj the point to znPlane.
-	//suppose the point(x,y) ,we try to find correct value of x,y when the point are projed into projPlane.
+	//step1. proj the point to znplane->
+	//suppose the point(x,y) ,we try to find correct value of x,y when the point are projed into projplane->
 	//p'.x/p.x = n/p.z		p'.y/p.y = n/p.z	=> p'.x = n * p.x/p.z		p'.y = n * p.y/p.z
 
 	//step2. proj znPlane point to a standard plane(x'',y'' is [-1,1])

@@ -75,7 +75,7 @@ IntersectionInfo* GetNearestIntersectionInfo(Scene & scene, Ray & ray)
 	auto itGraphics = scene.m_graphicsObjectVec.begin();
 	while (itGraphics != scene.m_graphicsObjectVec.end())
 	{
-		(*itGraphics).CalcRayIntersectionInfo(ray, &inf);
+		(*itGraphics)->CalcRayIntersectionInfo(ray, &inf);
 		if (inf == NULL)
 		{
 			itGraphics++;
@@ -123,7 +123,7 @@ Color_t RayTrace(Ray& eyeRay, Scene& scene, unsigned int maxRayTraceDepth, float
 
 	Ray								lightRay;
 	IntersectionInfo*				lightIntersectionInf;
-	std::vector<BaseLight>	VisibleLightArray;
+	std::vector<BaseLight*>			VisibleLightArray;
 
 	if (nearestInf == nullptr)
 	{
@@ -139,10 +139,10 @@ Color_t RayTrace(Ray& eyeRay, Scene& scene, unsigned int maxRayTraceDepth, float
 	auto itLightObject = scene.m_lightObjectVec.begin();
 	while (itLightObject != scene.m_lightObjectVec.end())
 	{
-		Vector4 lightDir = nearestInf->m_position - (*itLightObject).m_position;
+		Vector4 lightDir = nearestInf->m_position - (*itLightObject)->m_position;
 		lightDir.ResetUnitVector();
 		lightRay.direction = lightDir;
-		lightRay.position = (*itLightObject).m_position;
+		lightRay.position = (*itLightObject)->m_position;
 		lightIntersectionInf = GetNearestIntersectionInfo(scene, lightRay);
 		if (IsSamePosition(lightIntersectionInf->m_position, nearestInf->m_position, lightIntersectionInf->fDistance))
 		{
@@ -152,9 +152,9 @@ Color_t RayTrace(Ray& eyeRay, Scene& scene, unsigned int maxRayTraceDepth, float
 		itLightObject ++;
 	}
 	
-	for (auto& itLight : VisibleLightArray)
+	for (auto itLight : VisibleLightArray)
 	{
-		resultColor.ColorAdd(itLight.ApplyLightShading(*nearestInf, eyeRay));
+		resultColor.ColorAdd(itLight->ApplyLightShading(*nearestInf, eyeRay));
 	}
 
 	if (maxRayTraceDepth > 0 && nearestInf->m_material.fReflectiveness > 0.0f)
@@ -428,14 +428,14 @@ bool Scene::AddLight(BaseLight* light)
 
 void Scene::ApplyMatrix(Matrix4& viewMatrix)
 {
-	for (auto& gameObject : m_graphicsObjectVec)
+	for (auto gameObject : m_graphicsObjectVec)
 	{
-		gameObject.ApplyMatrixTransform(viewMatrix);
+		gameObject->ApplyMatrixTransform(viewMatrix);
 	}
 
-	for (auto& gameObject : m_lightObjectVec)
+	for (auto gameObject : m_lightObjectVec)
 	{
-		gameObject.ApplyMatrixTransform(viewMatrix);
+		gameObject->ApplyMatrixTransform(viewMatrix);
 	}
 
 	/*for (int i = 0; i < nSphereCnt; ++i)
@@ -460,101 +460,101 @@ void InitScene(Scene& scene)
 	// Scene init
 	scene.nSphereCnt = 0;
 	scene.nFloorCnt = 0;
-	Sphere ball0 = Sphere();
+	Sphere* ball0 = new Sphere();
 
-	ball0.m_color = 0x0000ff00;
-	ball0.m_material.m_materialReflectRatio.m_Ambient = 0x00ffffff;
-	ball0.m_material.m_materialReflectRatio.m_Diffuse = 0x00ffffff;
-	ball0.m_material.m_materialReflectRatio.m_Specular = 0x00ffffff;
-	ball0.m_material.m_materialReflectRatio.m_Emissive = 0x0;
+	ball0->m_color = 0x0000ff00;
+	ball0->m_material.m_materialReflectRatio.m_Ambient = 0x00ffffff;
+	ball0->m_material.m_materialReflectRatio.m_Diffuse = 0x00ffffff;
+	ball0->m_material.m_materialReflectRatio.m_Specular = 0x00ffffff;
+	ball0->m_material.m_materialReflectRatio.m_Emissive = 0x0;
 
-	ball0.m_material.fReflectiveness = .3f;
-	ball0.m_material.fRefractionRatio = DEFAULT_REFRACTIONRATIO;
-	ball0.m_material.fRefractiveness = .0f;
+	ball0->m_material.fReflectiveness = .3f;
+	ball0->m_material.fRefractionRatio = DEFAULT_REFRACTIONRATIO;
+	ball0->m_material.fRefractiveness = .0f;
 
-	ball0.m_position.fX = -3.0f;
-	ball0.m_position.fY = -1.0f;
-	ball0.m_position.fZ = 3.0f;
-	ball0.m_position.fW = 1.0f;
+	ball0->m_position.fX = -3.0f;
+	ball0->m_position.fY = -1.0f;
+	ball0->m_position.fZ = 3.0f;
+	ball0->m_position.fW = 1.0f;
 
-	ball0.m_fRadius = 1.0f;
+	ball0->m_fRadius = 1.0f;
 	scene.AddGraphics(ball0);
 	//scene.sphereList[scene.nSphereCnt++] = ball0;
 
-	Sphere ball1 = Sphere();
-	ball1.m_color = 0x00ff0000;
+	Sphere* ball1 = new Sphere();
+	ball1->m_color = 0x00ff0000;
 
-	ball1.m_material.m_materialReflectRatio.m_Ambient = 0x00ffffff;
-	ball1.m_material.m_materialReflectRatio.m_Diffuse = 0x00ffffff;
-	ball1.m_material.m_materialReflectRatio.m_Specular = 0x00ffffff;
-	ball1.m_material.m_materialReflectRatio.m_Emissive = 0x0;
+	ball1->m_material.m_materialReflectRatio.m_Ambient = 0x00ffffff;
+	ball1->m_material.m_materialReflectRatio.m_Diffuse = 0x00ffffff;
+	ball1->m_material.m_materialReflectRatio.m_Specular = 0x00ffffff;
+	ball1->m_material.m_materialReflectRatio.m_Emissive = 0x0;
 
-	ball1.m_material.fReflectiveness = .0f;
-	ball1.m_material.fRefractionRatio = GLASS_REFRACTION;
-	ball1.m_material.fRefractiveness = .5f;
+	ball1->m_material.fReflectiveness = .0f;
+	ball1->m_material.fRefractionRatio = GLASS_REFRACTION;
+	ball1->m_material.fRefractiveness = .5f;
 
-	ball1.m_position.fX = .0f;
-	ball1.m_position.fY = .0f;
-	ball1.m_position.fZ = 5.0f;
-	ball1.m_position.fW = 1.0f;
+	ball1->m_position.fX = .0f;
+	ball1->m_position.fY = .0f;
+	ball1->m_position.fZ = 5.0f;
+	ball1->m_position.fW = 1.0f;
 
-	ball1.m_fRadius = 2.0f;
+	ball1->m_fRadius = 2.0f;
 	scene.AddGraphics(ball1);
 
-	Sphere ball2 = Sphere();
-	ball2.m_color = 0x0000ff00;
+	Sphere* ball2 = new Sphere();
+	ball2->m_color = 0x0000ff00;
 
-	ball2.m_material.m_materialReflectRatio.m_Ambient = 0x00ffffff;
-	ball2.m_material.m_materialReflectRatio.m_Diffuse = 0x00ffffff;
-	ball2.m_material.m_materialReflectRatio.m_Specular = 0x00ffffff;
-	ball2.m_material.m_materialReflectRatio.m_Emissive = 0x0;
+	ball2->m_material.m_materialReflectRatio.m_Ambient = 0x00ffffff;
+	ball2->m_material.m_materialReflectRatio.m_Diffuse = 0x00ffffff;
+	ball2->m_material.m_materialReflectRatio.m_Specular = 0x00ffffff;
+	ball2->m_material.m_materialReflectRatio.m_Emissive = 0x0;
 
-	ball2.m_material.fReflectiveness = .0f;
-	ball2.m_material.fRefractionRatio = GLASS_REFRACTION;
-	ball2.m_material.fRefractiveness = 2.0f;
+	ball2->m_material.fReflectiveness = .0f;
+	ball2->m_material.fRefractionRatio = GLASS_REFRACTION;
+	ball2->m_material.fRefractiveness = 2.0f;
 
-	ball2.m_position.fX = 4.0f;
-	ball2.m_position.fY = -1.0f;
-	ball2.m_position.fZ = 3.0f;
-	ball2.m_position.fW = 1.0f;
+	ball2->m_position.fX = 4.0f;
+	ball2->m_position.fY = -1.0f;
+	ball2->m_position.fZ = 3.0f;
+	ball2->m_position.fW = 1.0f;
 
-	ball2.m_fRadius = 1.0f;
+	ball2->m_fRadius = 1.0f;
 	scene.AddGraphics(ball2);
 
-	Plane plane;
-	plane.planeColor = 0x000000ff;
+	Plane* plane = new Plane();
+	plane->planeColor = 0x000000ff;
 
-	plane.vectorPlanePoint.fY = -2.0f;
-	plane.vectorPlanePoint.fW = 1.0f;
+	plane->vectorPlanePoint.fY = -2.0f;
+	plane->vectorPlanePoint.fW = 1.0f;
 
-	plane.vectorNormal.fY = 1.0f;
-	plane.vectorNormal.fX = 0.0f;
-	plane.vectorNormal.fZ = 0.0f;
-	plane.vectorNormal.fW = 0.0f;
+	plane->vectorNormal.fY = 1.0f;
+	plane->vectorNormal.fX = 0.0f;
+	plane->vectorNormal.fZ = 0.0f;
+	plane->vectorNormal.fW = 0.0f;
 
-	plane.fDistance = 5.0f;
-	plane.planeMaterial.m_materialReflectRatio.m_Ambient = 0x00ffffff;
-	plane.planeMaterial.m_materialReflectRatio.m_Diffuse = 0x00ffffff;
-	plane.planeMaterial.m_materialReflectRatio.m_Emissive = 0x00ffffff;
-	plane.planeMaterial.m_materialReflectRatio.m_Specular = 0x00ffffff;
+	plane->fDistance = 5.0f;
+	plane->planeMaterial.m_materialReflectRatio.m_Ambient = 0x00ffffff;
+	plane->planeMaterial.m_materialReflectRatio.m_Diffuse = 0x00ffffff;
+	plane->planeMaterial.m_materialReflectRatio.m_Emissive = 0x00ffffff;
+	plane->planeMaterial.m_materialReflectRatio.m_Specular = 0x00ffffff;
 
-	plane.planeMaterial.fReflectiveness = .3f;
-	plane.planeMaterial.fRefractionRatio = .0f;
-	plane.planeMaterial.fRefractiveness = .0f;
+	plane->planeMaterial.fReflectiveness = .3f;
+	plane->planeMaterial.fRefractionRatio = .0f;
+	plane->planeMaterial.fRefractiveness = .0f;
 
 	scene.AddGraphics(plane);
 
-	PointLight light;
-	light.Ambient = 0x202020;
-	light.Diffuse = 0x808080;
-	light.Specular = 0xffffff;
+	PointLight* light = new PointLight();
+	light->Ambient = 0x202020;
+	light->Diffuse = 0x808080;
+	light->Specular = 0xffffff;
 
-	light.fPower = 2.0f;
+	light->fPower = 2.0f;
 
-	light.m_position.fX = -1.0f;
-	light.m_position.fY = 5.0f;
-	light.m_position.fZ = 2.0f;
-	light.m_position.fW = 1.0f;
+	light->m_position.fX = -1.0f;
+	light->m_position.fY = 5.0f;
+	light->m_position.fZ = 2.0f;
+	light->m_position.fW = 1.0f;
 
 	scene.AddLight(light);
 	//scene.lightList[scene.nLightCnt++] = light;
