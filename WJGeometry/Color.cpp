@@ -36,11 +36,6 @@ void Color_t::operator=(const Color_t& colorValue)
 	this->m_colorValue = colorValue.m_colorValue;
 }
 
-float Color_t::GetColorValue()
-{
-	return m_colorValue;
-}
-
 float Color_t::GetR()
 {
 	int nRValue = this->m_colorValue & ColorMaskR;

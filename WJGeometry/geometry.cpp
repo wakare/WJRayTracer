@@ -75,7 +75,7 @@ IntersectionInfo* GetNearestIntersectionInfo(Scene & scene, Ray & ray)
 	auto itGraphics = scene.m_graphicsObjectVec.begin();
 	while (itGraphics != scene.m_graphicsObjectVec.end())
 	{
-		itGraphics->CalcRayIntersectionInfo(ray, &inf);
+		(*itGraphics).CalcRayIntersectionInfo(ray, &inf);
 		if (inf == NULL)
 		{
 			itGraphics++;
@@ -123,7 +123,7 @@ Color_t RayTrace(Ray& eyeRay, Scene& scene, unsigned int maxRayTraceDepth, float
 
 	Ray								lightRay;
 	IntersectionInfo*				lightIntersectionInf;
-	std::vector<const BaseLight&>	VisibleLightArray;
+	std::vector<BaseLight>	VisibleLightArray;
 
 	if (nearestInf == nullptr)
 	{
@@ -139,10 +139,10 @@ Color_t RayTrace(Ray& eyeRay, Scene& scene, unsigned int maxRayTraceDepth, float
 	auto itLightObject = scene.m_lightObjectVec.begin();
 	while (itLightObject != scene.m_lightObjectVec.end())
 	{
-		Vector4 lightDir = nearestInf->m_position - itLightObject->m_position;
+		Vector4 lightDir = nearestInf->m_position - (*itLightObject).m_position;
 		lightDir.ResetUnitVector();
 		lightRay.direction = lightDir;
-		lightRay.position = itLightObject->m_position;
+		lightRay.position = (*itLightObject).m_position;
 		lightIntersectionInf = GetNearestIntersectionInfo(scene, lightRay);
 		if (IsSamePosition(lightIntersectionInf->m_position, nearestInf->m_position, lightIntersectionInf->fDistance))
 		{
@@ -151,30 +151,11 @@ Color_t RayTrace(Ray& eyeRay, Scene& scene, unsigned int maxRayTraceDepth, float
 
 		itLightObject ++;
 	}
-
-	/*for (int i = 0; i < scene.nLightCnt; ++i)
-	{
-		Vector4 lightDir = nearestInf->m_position - scene.lightList[i].m_position;
-		lightDir.ResetUnitVector();
-		lightRay.direction = lightDir;
-		lightRay.position = scene.lightList[i].m_position;
-		lightIntersectionInf = GetNearestIntersectionInfo(scene, lightRay);
-		if (IsSamePosition(lightIntersectionInf->m_position, nearestInf->m_position, lightIntersectionInf->fDistance))
-		{
-			VisibleLightArray[VisibleLightCount++] = &scene.lightList[i];
-		}
-	}
-	*/
 	
-	for (auto itLight : VisibleLightArray)
+	for (auto& itLight : VisibleLightArray)
 	{
 		resultColor.ColorAdd(itLight.ApplyLightShading(*nearestInf, eyeRay));
 	}
-
-	/*for (int i = 0; i < VisibleLightCount; ++i)
-	{
-		resultColor.ColorAdd((*VisibleLightArray[i], *nearestInf, eyeRay));
-	}*/
 
 	if (maxRayTraceDepth > 0 && nearestInf->m_material.fReflectiveness > 0.0f)
 	{
@@ -182,7 +163,6 @@ Color_t RayTrace(Ray& eyeRay, Scene& scene, unsigned int maxRayTraceDepth, float
 		reflectRay.direction = eyeRay.direction - nearestInf->m_normalRay *(nearestInf->m_normalRay * eyeRay.direction) * 2;
 		reflectRay.position = nearestInf->m_position - eyeRay.direction * REFLECT_DEVIATION;
 		reflectColor = RayTrace(reflectRay, scene, maxRayTraceDepth - 1, nearestInf->m_material.fRefractionRatio);
-
 	}
 	else
 	{
@@ -428,7 +408,7 @@ Color_t PointLight::ApplyLightShading(IntersectionInfo & intersectionInf, Ray & 
 	return result;
 }
 
-bool Scene::AddGraphics(const BaseGraphics & graphics)
+bool Scene::AddGraphics(BaseGraphics* graphics)
 {
 	bool bResult = false;
 	m_graphicsObjectVec.push_back(graphics);
@@ -437,7 +417,7 @@ bool Scene::AddGraphics(const BaseGraphics & graphics)
 	return bResult;
 }
 
-bool Scene::AddLight(const BaseLight & light)
+bool Scene::AddLight(BaseLight* light)
 {
 	bool bResult = false;
 	m_lightObjectVec.push_back(light);
@@ -446,14 +426,14 @@ bool Scene::AddLight(const BaseLight & light)
 	return bResult;
 }
 
-void Scene::ApplyMatrix(const Matrix4& viewMatrix)
+void Scene::ApplyMatrix(Matrix4& viewMatrix)
 {
-	for (auto gameObject : m_graphicsObjectVec)
+	for (auto& gameObject : m_graphicsObjectVec)
 	{
 		gameObject.ApplyMatrixTransform(viewMatrix);
 	}
 
-	for (auto gameObject : m_lightObjectVec)
+	for (auto& gameObject : m_lightObjectVec)
 	{
 		gameObject.ApplyMatrixTransform(viewMatrix);
 	}

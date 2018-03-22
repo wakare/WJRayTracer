@@ -17,7 +17,6 @@ public:
 	void operator=(int colorValue);
 	void operator=(const Color_t& colorValue);
 			
-	float GetColorValue();
 	float GetR();
 	float GetG();
 	float GetB();

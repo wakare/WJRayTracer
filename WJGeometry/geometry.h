@@ -165,18 +165,14 @@ public:
 	float			fDefaultRefractiveness	= 1.0f;
 
 	Camera			mainCamera;
-	
-	//Sphere			sphereList[MAXSPHERECNT];
-	//PointLight		lightList[MAXLIGHTCNT];
-	//Plane				floors[MAXFLOORCNT];
 
-	std::vector<const BaseGraphics&>	m_graphicsObjectVec;
-	std::vector<const BaseLight&>		m_lightObjectVec;
+	std::vector<BaseGraphics*>	m_graphicsObjectVec;
+	std::vector<BaseLight*>		m_lightObjectVec;
 
 	Scene() {};
-	bool AddGraphics(const BaseGraphics& graphicsObject);
-	bool AddLight(const BaseLight& lightObject);
-	void ApplyMatrix(const Matrix4& transformMatrix);
+	bool AddGraphics(BaseGraphics* graphicsObject);
+	bool AddLight(BaseLight* lightObject);
+	void ApplyMatrix(Matrix4& transformMatrix);
 };
 
 IntersectionInfo* GetNearestIntersectionInfo(Scene& scene, Ray& ray);
