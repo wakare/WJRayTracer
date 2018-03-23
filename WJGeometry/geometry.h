@@ -70,7 +70,9 @@ public:
 
 	MaterialReflectRatio m_materialReflectRatio;
 
-	Material() :m_materialReflectRatio(0x0, 0x0, 0x0, 0x0) {};
+	Material() :m_materialReflectRatio(0x0, 0x0, 0x0, 0x0), 
+		fReflectiveness(0.0f), fRefractiveness(0.0f), fRefractionRatio(0.0f)
+	{};
 };
 
 class IntersectionInfo
@@ -121,7 +123,7 @@ public:
 
 	Sphere():m_color(0x0) {};
 	virtual void CalcRayIntersectionInfo(Ray& ray,IntersectionInfo** pInf);
-	virtual void ApplyMatrixTransform(const Matrix4&);
+	virtual void ApplyMatrixTransform(const Matrix4& transformMatrix);
 };
 
 class Plane: public BaseGraphics

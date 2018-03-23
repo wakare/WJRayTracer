@@ -75,10 +75,10 @@ IntersectionInfo* GetNearestIntersectionInfo(Scene & scene, Ray & ray)
 	auto itGraphics = scene.m_graphicsObjectVec.begin();
 	while (itGraphics != scene.m_graphicsObjectVec.end())
 	{
-		(*itGraphics)->CalcRayIntersectionInfo(ray, &inf);
-		if (inf == NULL)
+		inf = nullptr;
+		(*(itGraphics++))->CalcRayIntersectionInfo(ray, &inf);
+		if (inf == nullptr)
 		{
-			itGraphics++;
 			continue;
 		}
 
@@ -93,8 +93,6 @@ IntersectionInfo* GetNearestIntersectionInfo(Scene & scene, Ray & ray)
 			t = inf->fDistance;
 			nearestInf = inf;
 		}
-
-		itGraphics++;
 	}
 
 	return nearestInf;
@@ -144,7 +142,9 @@ Color_t RayTrace(Ray& eyeRay, Scene& scene, unsigned int maxRayTraceDepth, float
 		lightRay.direction = lightDir;
 		lightRay.position = (*itLightObject)->m_position;
 		lightIntersectionInf = GetNearestIntersectionInfo(scene, lightRay);
-		if (IsSamePosition(lightIntersectionInf->m_position, nearestInf->m_position, lightIntersectionInf->fDistance))
+
+		if (lightIntersectionInf != nullptr &&
+			IsSamePosition(lightIntersectionInf->m_position, nearestInf->m_position, lightIntersectionInf->fDistance))
 		{
 			VisibleLightArray.push_back(*itLightObject);
 		}
@@ -273,35 +273,31 @@ void Sphere::CalcRayIntersectionInfo(Ray& ray, IntersectionInfo ** pInf)
 	}
 	float k = ray.direction * distance;
 	float temp = k*k - (distance*distance - m_fRadius*m_fRadius);
+
 	if (temp < 0)
-	{
 		return;
-	}
 	else
 	{
 		float t;
 		if (!isInsideSphere)
-		{
 			t = -k - sqrt(temp);
-		}
 		else
-		{
 			t = -k + sqrt(temp);
-		}
+		
 		if (t < POINT_DEVIATION)
-		{
 			return;
-		}
+		
 		Vector4 intersectionPos = ray.position + ray.direction*t;
 		intersectionPos.fW = 1.0f;
-		*pInf = new IntersectionInfo();
 
+		*pInf = new IntersectionInfo();
 		(*pInf)->fDistance = t;
 		(*pInf)->m_position = intersectionPos;
 		(*pInf)->m_color = m_color;
 		(*pInf)->bIsHit = true;
 		(*pInf)->m_material = m_material;
 		(*pInf)->m_normalRay = (intersectionPos - m_position);
+
 		if (isInsideSphere)
 		{
 			(*pInf)->m_normalRay = -(*pInf)->m_normalRay;
@@ -373,9 +369,9 @@ void PointLight::ApplyMatrixTransform(const Matrix4 & transformMatrix)
 Color_t PointLight::ApplyLightShading(IntersectionInfo & intersectionInf, Ray & ray)
 {
 	Color_t result = 0x0;
-	Color_t Diffuse = 0x0;
-	Color_t Specular = 0x0;
-	Color_t Ambient = 0x0;
+	Color_t diffuseTemp = 0x0;
+	Color_t specularTemp = 0x0;
+	Color_t ambientTemp = 0x0;
 
 	Vector4 lightDir = intersectionInf.m_position - m_position;
 	lightDir.ResetUnitVector();
@@ -384,26 +380,27 @@ Color_t PointLight::ApplyLightShading(IntersectionInfo & intersectionInf, Ray & 
 	Vector4 eyeDir = -ray.direction;
 	eyeDir.ResetUnitVector();
 
-	Ambient = Ambient;
-	Ambient.ColorModulate(intersectionInf.m_material.m_materialReflectRatio.m_Ambient);
-	Ambient.ColorModulate(intersectionInf.m_color);
+	ambientTemp = this->Ambient;
+	ambientTemp.ColorModulate(intersectionInf.m_material.m_materialReflectRatio.m_Ambient);
+	ambientTemp.ColorModulate(intersectionInf.m_color);
 
-	Diffuse = Diffuse;
-	Diffuse.ColorModulate(intersectionInf.m_material.m_materialReflectRatio.m_Diffuse);
+	diffuseTemp = this->Diffuse;
+	diffuseTemp.ColorModulate(intersectionInf.m_material.m_materialReflectRatio.m_Diffuse);
 	float k = fmax(0.0f, (-lightDir) * intersectionInf.m_normalRay);
-	Diffuse.ColorModulate(intersectionInf.m_color);
-	Diffuse.ColorMutiply(k);
+
+	diffuseTemp.ColorModulate(intersectionInf.m_color);
+	diffuseTemp.ColorMutiply(k);
 
 	float SpecTemp = eyeDir * reflectDir;
 	SpecTemp = (SpecTemp > 0.0f) ? SpecTemp : 0.0f;
 	SpecTemp = pow(SpecTemp, fPower);
-	Specular = Specular;
-	Specular.ColorModulate(0xffffff);
-	Specular.ColorMutiply(SpecTemp);
+	specularTemp = this->Specular;
+	specularTemp.ColorModulate(0xffffff);
+	specularTemp.ColorMutiply(SpecTemp);
 
-	result = Diffuse;
-	result.ColorAdd(Ambient);
-	result.ColorAdd(Specular);
+	result.ColorAdd(diffuseTemp);
+	result.ColorAdd(ambientTemp);
+	result.ColorAdd(specularTemp);
 
 	return result;
 }
@@ -462,6 +459,7 @@ void InitScene(Scene& scene)
 	scene.nFloorCnt = 0;
 	Sphere* ball0 = new Sphere();
 
+#pragma region InitSphere
 	ball0->m_color = 0x0000ff00;
 	ball0->m_material.m_materialReflectRatio.m_Ambient = 0x00ffffff;
 	ball0->m_material.m_materialReflectRatio.m_Diffuse = 0x00ffffff;
@@ -511,7 +509,7 @@ void InitScene(Scene& scene)
 
 	ball2->m_material.fReflectiveness = .0f;
 	ball2->m_material.fRefractionRatio = GLASS_REFRACTION;
-	ball2->m_material.fRefractiveness = 2.0f;
+	ball2->m_material.fRefractiveness = 0.2f;
 
 	ball2->m_position.fX = 4.0f;
 	ball2->m_position.fY = -1.0f;
@@ -520,7 +518,9 @@ void InitScene(Scene& scene)
 
 	ball2->m_fRadius = 1.0f;
 	scene.AddGraphics(ball2);
+#pragma endregion
 
+#pragma region InitPlane
 	Plane* plane = new Plane();
 	plane->planeColor = 0x000000ff;
 
@@ -543,7 +543,9 @@ void InitScene(Scene& scene)
 	plane->planeMaterial.fRefractiveness = .0f;
 
 	scene.AddGraphics(plane);
+#pragma endregion
 
+#pragma region InitLight
 	PointLight* light = new PointLight();
 	light->Ambient = 0x202020;
 	light->Diffuse = 0x808080;
@@ -557,6 +559,8 @@ void InitScene(Scene& scene)
 	light->m_position.fW = 1.0f;
 
 	scene.AddLight(light);
+#pragma endregion
+
 	//scene.lightList[scene.nLightCnt++] = light;
 
 	/*PointLight light2 = PointLight();
