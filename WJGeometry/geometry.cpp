@@ -352,12 +352,12 @@ void Plane::ApplyMatrixTransform(const Matrix4 & viewMatrix)
 Color_t Plane::SampleTextureMap(float x, float z)
 {
 	if (x > 1e5 || x < -1e5 || z > 1e5 || z < -1e5)
-		return Color_t(0);
+		return Color_t(COLOR_TYPE::BLACK);
 
 	int nX = (x > 0) ? static_cast<int>(x) : static_cast<int>(x) - 1;
 	int nZ = (z > 0) ? static_cast<int>(z) : static_cast<int>(z) - 1;
 
-	Color_t result = Color_t(((nX + nZ) & 0x1) ? COLOR_WHITE : COLOR_BLACK);
+	Color_t result = Color_t(((nX + nZ) & 0x1) ? COLOR_TYPE::WHITE : COLOR_TYPE::BLACK);
 	return result;
 }
 
@@ -368,10 +368,10 @@ void PointLight::ApplyMatrixTransform(const Matrix4 & transformMatrix)
 
 Color_t PointLight::ApplyLightShading(IntersectionInfo & intersectionInf, Ray & ray)
 {
-	Color_t result = 0x0;
-	Color_t diffuseTemp = 0x0;
-	Color_t specularTemp = 0x0;
-	Color_t ambientTemp = 0x0;
+	Color_t result			= COLOR_TYPE::BLACK;
+	Color_t diffuseTemp		= COLOR_TYPE::BLACK;
+	Color_t specularTemp	= COLOR_TYPE::BLACK;
+	Color_t ambientTemp		= COLOR_TYPE::BLACK;
 
 	Vector4 lightDir = intersectionInf.m_position - m_position;
 	lightDir.ResetUnitVector();
@@ -460,15 +460,15 @@ void InitScene(Scene& scene)
 	Sphere* ball0 = new Sphere();
 
 #pragma region InitSphere
-	ball0->m_color = 0x0000ff00;
-	ball0->m_material.m_materialReflectRatio.m_Ambient = 0x00ffffff;
-	ball0->m_material.m_materialReflectRatio.m_Diffuse = 0x00ffffff;
-	ball0->m_material.m_materialReflectRatio.m_Specular = 0x00ffffff;
-	ball0->m_material.m_materialReflectRatio.m_Emissive = 0x0;
+	ball0->m_color = COLOR_TYPE::RED;
+	ball0->m_material.m_materialReflectRatio.m_Ambient = COLOR_TYPE::WHITE;
+	ball0->m_material.m_materialReflectRatio.m_Diffuse = COLOR_TYPE::WHITE;
+	ball0->m_material.m_materialReflectRatio.m_Specular = COLOR_TYPE::WHITE;
+	ball0->m_material.m_materialReflectRatio.m_Emissive = COLOR_TYPE::BLACK;
 
-	ball0->m_material.fReflectiveness = .3f;
+	ball0->m_material.fReflectiveness = 0.3f;
 	ball0->m_material.fRefractionRatio = DEFAULT_REFRACTIONRATIO;
-	ball0->m_material.fRefractiveness = .0f;
+	ball0->m_material.fRefractiveness = 0.0f;
 
 	ball0->m_position.fX = -3.0f;
 	ball0->m_position.fY = -1.0f;
@@ -480,16 +480,16 @@ void InitScene(Scene& scene)
 	//scene.sphereList[scene.nSphereCnt++] = ball0;
 
 	Sphere* ball1 = new Sphere();
-	ball1->m_color = 0x00ff0000;
+	ball1->m_color = COLOR_TYPE::RED;
 
-	ball1->m_material.m_materialReflectRatio.m_Ambient = 0x00ffffff;
-	ball1->m_material.m_materialReflectRatio.m_Diffuse = 0x00ffffff;
-	ball1->m_material.m_materialReflectRatio.m_Specular = 0x00ffffff;
-	ball1->m_material.m_materialReflectRatio.m_Emissive = 0x0;
+	ball1->m_material.m_materialReflectRatio.m_Ambient = COLOR_TYPE::WHITE;
+	ball1->m_material.m_materialReflectRatio.m_Diffuse = COLOR_TYPE::WHITE;
+	ball1->m_material.m_materialReflectRatio.m_Specular = COLOR_TYPE::WHITE;
+	ball1->m_material.m_materialReflectRatio.m_Emissive = COLOR_TYPE::BLACK;
 
-	ball1->m_material.fReflectiveness = .0f;
+	ball1->m_material.fReflectiveness = 0.0f;
 	ball1->m_material.fRefractionRatio = GLASS_REFRACTION;
-	ball1->m_material.fRefractiveness = .5f;
+	ball1->m_material.fRefractiveness = 0.9f;
 
 	ball1->m_position.fX = .0f;
 	ball1->m_position.fY = .0f;
@@ -500,14 +500,14 @@ void InitScene(Scene& scene)
 	scene.AddGraphics(ball1);
 
 	Sphere* ball2 = new Sphere();
-	ball2->m_color = 0x0000ff00;
+	ball2->m_color = COLOR_TYPE::GREEN;
 
-	ball2->m_material.m_materialReflectRatio.m_Ambient = 0x00ffffff;
-	ball2->m_material.m_materialReflectRatio.m_Diffuse = 0x00ffffff;
-	ball2->m_material.m_materialReflectRatio.m_Specular = 0x00ffffff;
-	ball2->m_material.m_materialReflectRatio.m_Emissive = 0x0;
+	ball2->m_material.m_materialReflectRatio.m_Ambient = COLOR_TYPE::WHITE;
+	ball2->m_material.m_materialReflectRatio.m_Diffuse = COLOR_TYPE::WHITE;
+	ball2->m_material.m_materialReflectRatio.m_Specular = COLOR_TYPE::WHITE;
+	ball2->m_material.m_materialReflectRatio.m_Emissive = COLOR_TYPE::BLACK;
 
-	ball2->m_material.fReflectiveness = .0f;
+	ball2->m_material.fReflectiveness = 0.8f;
 	ball2->m_material.fRefractionRatio = GLASS_REFRACTION;
 	ball2->m_material.fRefractiveness = 0.2f;
 
@@ -522,7 +522,7 @@ void InitScene(Scene& scene)
 
 #pragma region InitPlane
 	Plane* plane = new Plane();
-	plane->planeColor = 0x000000ff;
+	plane->planeColor = COLOR_TYPE::BLUE;
 
 	plane->vectorPlanePoint.fY = -2.0f;
 	plane->vectorPlanePoint.fW = 1.0f;
@@ -533,10 +533,10 @@ void InitScene(Scene& scene)
 	plane->vectorNormal.fW = 0.0f;
 
 	plane->fDistance = 5.0f;
-	plane->planeMaterial.m_materialReflectRatio.m_Ambient = 0x00ffffff;
-	plane->planeMaterial.m_materialReflectRatio.m_Diffuse = 0x00ffffff;
-	plane->planeMaterial.m_materialReflectRatio.m_Emissive = 0x00ffffff;
-	plane->planeMaterial.m_materialReflectRatio.m_Specular = 0x00ffffff;
+	plane->planeMaterial.m_materialReflectRatio.m_Ambient = COLOR_TYPE::WHITE;
+	plane->planeMaterial.m_materialReflectRatio.m_Diffuse = COLOR_TYPE::WHITE;
+	plane->planeMaterial.m_materialReflectRatio.m_Emissive = COLOR_TYPE::WHITE;
+	plane->planeMaterial.m_materialReflectRatio.m_Specular = COLOR_TYPE::WHITE;
 
 	plane->planeMaterial.fReflectiveness = .3f;
 	plane->planeMaterial.fRefractionRatio = .0f;
@@ -547,11 +547,11 @@ void InitScene(Scene& scene)
 
 #pragma region InitLight
 	PointLight* light = new PointLight();
-	light->Ambient = 0x202020;
-	light->Diffuse = 0x808080;
-	light->Specular = 0xffffff;
+	light->Ambient = 0x00404040;
+	light->Diffuse = 0x00808080;
+	light->Specular = 0x00ffffff;
 
-	light->fPower = 2.0f;
+	light->fPower = 8.0f;
 
 	light->m_position.fX = -1.0f;
 	light->m_position.fY = 5.0f;

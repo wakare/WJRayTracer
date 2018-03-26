@@ -2,10 +2,21 @@
 
 #include "WJMath.h"
 #include <stdint.h>
+#include <stdlib.h>
+#include <type_traits>
 
 #define ColorMaskR 0x00ff0000
 #define ColorMaskG 0x0000ff00
 #define ColorMaskB 0x000000ff
+
+enum class COLOR_TYPE
+{
+	RED		= 0x00FF0000,
+	GREEN	= 0x0000FF00,
+	BLUE	= 0x000000FF,
+	WHITE	= 0x00FFFFFF,
+	BLACK	= 0x00000000
+};
 
 class Color_t
 {
@@ -13,6 +24,11 @@ public:
     int32_t m_colorValue;
 
 	Color_t(int colorValue);
+	Color_t(COLOR_TYPE color) 
+	{ 
+		using _COLOR_TYPE = std::underlying_type_t<COLOR_TYPE>;
+		m_colorValue = static_cast<_COLOR_TYPE>(color);
+	};
 
 	void operator=(int colorValue);
 	void operator=(const Color_t& colorValue);

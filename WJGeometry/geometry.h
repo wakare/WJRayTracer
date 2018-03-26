@@ -7,11 +7,6 @@
 #define MAXSPHERECNT				8
 #define MAXFLOORCNT					6
 #define MAXLIGHTCNT					4
-#define COLOR_RED					0x00FF0000
-#define COLOR_GREEN					0x0000FF00
-#define COLOR_BLUE					0x000000FF
-#define COLOR_WHITE					0x00FFFFFF
-#define COLOR_BLACK					0x00000000
 #define DEFAULT_BACKCOLOR			0x0
 #define DEFAULT_REFRACTIONRATIO		1.0f
 #define MAX_DEPTH					10
@@ -22,7 +17,8 @@
 #define REFLECT_DEVIATION			1e-6f
 #define GLASS_REFRACTION			1.66666f
 
-enum RenderMode {
+enum RenderMode 
+{
 	SPEC,	//specular material
 	DIFF,	//diffuse  material
 	BOTH	//specular & diffuse material
@@ -87,7 +83,7 @@ public:
 	Color_t		m_color;
 	Material	m_material;
 
-	IntersectionInfo() :m_color(0x0) {};
+	IntersectionInfo() :m_color(COLOR_TYPE::BLACK) {};
 };
 
 class Ray
@@ -121,7 +117,7 @@ public:
 	Color_t		m_color;		//assume each point is the same color.
 	Material	m_material;
 
-	Sphere():m_color(0x0) {};
+	Sphere():m_color(COLOR_TYPE::BLACK) {};
 	virtual void CalcRayIntersectionInfo(Ray& ray,IntersectionInfo** pInf);
 	virtual void ApplyMatrixTransform(const Matrix4& transformMatrix);
 };
@@ -136,7 +132,7 @@ public:
 	Color_t		planeColor;
 	Material	planeMaterial;
 	
-	Plane():planeColor(0x0) {};
+	Plane():planeColor(COLOR_TYPE::BLACK) {};
 	Color_t SampleTextureMap(float x, float z);
 	virtual void CalcRayIntersectionInfo(Ray& ray, IntersectionInfo** pInf);
 	virtual void ApplyMatrixTransform(const Matrix4&);
