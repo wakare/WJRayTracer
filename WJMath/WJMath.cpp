@@ -191,63 +191,64 @@ Matrix4::Matrix4(float Array[4][4])
 Matrix4::Matrix4()
 {
 	for (int i = 0; i < 4; i++)
-			for (int j = 0; j < 4; j++)
-					fMatrixArray[i][j] = 0.0f;
-		
-	
-}
-
-
-Matrix4& getPerspectiveProjMatrix(float theta, float zn, float zf, float widthHeightScale)
-{
-	//theta -- the view frustum angle(up to down)
-	//zn -- near Z clipPlane
-	//zf -- far Z clipPlane
-	//widthHeightScale -- the value of Width / Height
-
-	//step1. proj the point to znplane->
-	//suppose the point(x,y) ,we try to find correct value of x,y when the point are projed into projplane->
-	//p'.x/p.x = n/p.z		p'.y/p.y = n/p.z	=> p'.x = n * p.x/p.z		p'.y = n * p.y/p.z
-
-	//step2. proj znPlane point to a standard plane(x'',y'' is [-1,1])
-	//p'.x/p''.x = W/2		p'.y/p''.y = H/2	=> p''.x = 2 * p'.x/W		p''.y = 2 * p'.y/H
-	//p''.x = 2*n*p.x/W*p.z		p''.y = 2*n*p.y/H*p.z
-	//cot(theta) = 2n/H ==> p''.y = cot(theta)*p.y/p.z		p''.x / p''.y = (p.x/p.y)*(H/W) ==> p''.x = p.x*cot(theta)/p.z*widthHeightScale
-
-	//last step is to find z-value after projection(z'' is [0,1])
-	//find a linear transform equation feds z'' value is small when the object is nearer than which z'' value is larger.
-	//a * 1/n + b = 0		a * 1/f + b = 1	=>	-n * b/f + b = 1	=>	b = 1/(1 - n/f)	a = n/(n/f - 1)
-	//the finally z value = n/(n/f - 1)/z + 1/(1 - n/f)
-	//we get the proj position(p.x,p.y,p.z) => ((p.x/p.z)*cot(theta)/widthHeightScale,cot(theta)*p.y/p.z,nf/(n - f)*p.z + f/(f - n))
-	//ProjMatrix feds equation (p.x,p.y,p.z,1) * ProjMatrix = (p''.x,p''.y,p''.z,1)
-	//we can calculate the matrix is :
-	float ProjArray[4][4] =
 	{
-		1 / (tan(theta / 2)*widthHeightScale),	0,						0,						0,
-		0,										1 / tan(theta / 2),		0,						0,
-		0,										0,						zf / (zf - zn),			1,
-		0,										0,						zf*zn / (zn - zf),		0
-	};
-	Matrix4 *ProjMatrix = new Matrix4(ProjArray);
-	return *ProjMatrix;
+		for (int j = 0; j < 4; j++)
+		{
+			fMatrixArray[i][j] = 0.0f;
+		}
+	}
 }
 
-Matrix4& getViewPortMatrix(float x, float y, float width, float height, float minZ, float maxZ)
-{
-	// CVV vertex -> Viewport position
-	// use several special position to calculate the viewport matrix.
-	// (-1,1,0,1)	->	(x,y,minZ,1)
-	// (1,1,0,1)	->	(x + width,y,minZ,1)
-	// (-1,-1,1,1)	->	(x,y+height,maxZ,1)
-	// (1,-1,1,1)	->	(x+width,y+height,maxZ,1)
-	float viewportArray[4][4] =
-	{
-		width / 2,		0,					0,				0,
-		0,				-height / 2,		0,				0,
-		0,				0,					maxZ - minZ,	0,
-		x + width / 2,	y + height / 2,		minZ,			1
-	};
+//Matrix4& getPerspectiveProjMatrix(float theta, float zn, float zf, float widthHeightScale)
+//{
+//	//theta -- the view frustum angle(up to down)
+//	//zn -- near Z clipPlane
+//	//zf -- far Z clipPlane
+//	//widthHeightScale -- the value of Width / Height
+//
+//	//step1. proj the point to znplane->
+//	//suppose the point(x,y) ,we try to find correct value of x,y when the point are projed into projplane->
+//	//p'.x/p.x = n/p.z		p'.y/p.y = n/p.z	=> p'.x = n * p.x/p.z		p'.y = n * p.y/p.z
+//
+//	//step2. proj znPlane point to a standard plane(x'',y'' is [-1,1])
+//	//p'.x/p''.x = W/2		p'.y/p''.y = H/2	=> p''.x = 2 * p'.x/W		p''.y = 2 * p'.y/H
+//	//p''.x = 2*n*p.x/W*p.z		p''.y = 2*n*p.y/H*p.z
+//	//cot(theta) = 2n/H ==> p''.y = cot(theta)*p.y/p.z		p''.x / p''.y = (p.x/p.y)*(H/W) ==> p''.x = p.x*cot(theta)/p.z*widthHeightScale
+//
+//	//last step is to find z-value after projection(z'' is [0,1])
+//	//find a linear transform equation feds z'' value is small when the object is nearer than which z'' value is larger.
+//	//a * 1/n + b = 0		a * 1/f + b = 1	=>	-n * b/f + b = 1	=>	b = 1/(1 - n/f)	a = n/(n/f - 1)
+//	//the finally z value = n/(n/f - 1)/z + 1/(1 - n/f)
+//	//we get the proj position(p.x,p.y,p.z) => ((p.x/p.z)*cot(theta)/widthHeightScale,cot(theta)*p.y/p.z,nf/(n - f)*p.z + f/(f - n))
+//	//ProjMatrix feds equation (p.x,p.y,p.z,1) * ProjMatrix = (p''.x,p''.y,p''.z,1)
+//	//we can calculate the matrix is :
+//	float ProjArray[4][4] =
+//	{
+//		1 / (tan(theta / 2)*widthHeightScale),	0,						0,						0,
+//		0,										1 / tan(theta / 2),		0,						0,
+//		0,										0,						zf / (zf - zn),			1,
+//		0,										0,						zf*zn / (zn - zf),		0
+//	};
+//	Matrix4 *ProjMatrix = new Matrix4(ProjArray);
+//	return *ProjMatrix;
+//}
 
-	Matrix4* viewportMatrix = new Matrix4(viewportArray);
-	return *viewportMatrix;
-}
+//Matrix4 getViewPortMatrix(float x, float y, float width, float height, float minZ, float maxZ)
+//{
+//	// CVV vertex -> Viewport position
+//	// use several special position to calculate the viewport matrix.
+//	// (-1,1,0,1)	->	(x,y,minZ,1)
+//	// (1,1,0,1)	->	(x + width,y,minZ,1)
+//	// (-1,-1,1,1)	->	(x,y+height,maxZ,1)
+//	// (1,-1,1,1)	->	(x+width,y+height,maxZ,1)
+//	float viewportArray[4][4] =
+//	{
+//		width / 2,		0,					0,				0,
+//		0,				-height / 2,		0,				0,
+//		0,				0,					maxZ - minZ,	0,
+//		x + width / 2,	y + height / 2,		minZ,			1
+//	};
+//
+//	Matrix4 viewportMatrix(viewportArray);
+//	return viewportMatrix;
+//}

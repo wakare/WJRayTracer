@@ -28,50 +28,6 @@ IntersectionInfo* GetNearestIntersectionInfo(Scene & scene, Ray & ray)
 	IntersectionInfo*		nearestInf = nullptr;
 	float					t = -1.0f; // t维护一个距离交点最近的物体的距离
 
-	/*
-	for (int i = 0; i < scene.nSphereCnt; i++)
-	{
-		scene.sphereList[i].CalcRayIntersectionInfo(ray, &inf);
-		if (inf == NULL)
-			continue;
-		
-		if (t < 0.0f)
-		{
-			t = inf->fDistance;
-			if (nearestInf.bIsHit == true && nearestInf.fDistance > inf->fDistance)
-				nearestInf = *inf;
-			else
-				nearestInf = *inf;
-		}
-		else if (t > inf->fDistance)
-		{
-			t = inf->fDistance;
-			nearestInf = *inf;
-		}
-	}
-
-	for (int i = 0; i < scene.nFloorCnt; ++i)
-	{
-		scene.floors[i].CalcRayIntersectionInfo(ray, &inf);
-		if (inf == NULL)
-			continue;
-		
-		if (t < 0.0f)
-		{
-			t = inf->fDistance;
-			if (nearestInf.bIsHit == true && nearestInf.fDistance > inf->fDistance)
-				nearestInf = *inf;
-			else
-				nearestInf = *inf;
-		}
-		else if (t > inf->fDistance)
-		{
-			t = inf->fDistance;
-			nearestInf = *inf;
-		}
-	}
-	*/
-
 	auto itGraphics = scene.m_graphicsObjectVec.begin();
 	while (itGraphics != scene.m_graphicsObjectVec.end())
 	{
@@ -91,6 +47,7 @@ IntersectionInfo* GetNearestIntersectionInfo(Scene & scene, Ray & ray)
 		if (t > inf->fDistance)
 		{
 			t = inf->fDistance;
+			delete (nearestInf);
 			nearestInf = inf;
 		}
 	}
@@ -196,6 +153,8 @@ Color_t RayTrace(Ray& eyeRay, Scene& scene, unsigned int maxRayTraceDepth, float
 	resultColor.ColorAdd(reflectColor);
 	refractionColor.ColorMutiply(nearestInf->m_material.fRefractiveness);
 	resultColor.ColorAdd(refractionColor);
+
+	delete(nearestInf);
 
 	return resultColor;
 }
